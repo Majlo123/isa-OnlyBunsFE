@@ -1,0 +1,30 @@
+<h1 class="app-title">OnlyBuns</h1>
+<div *ngFor="let post of posts" class="post-container">
+  <div class="post-header">
+    <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture" />
+    <h3 class="username">username</h3>
+  </div>
+
+  <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="Post image" class="post-image" />
+
+  <div class="post-actions">
+    <button (click)="likePost(post)">
+      <img src="assets/images/like.jpg" alt="Like" class="action-icon" />
+    </button>
+    <span class="like-count">{{ post.likes }} likes</span>
+  </div>
+
+  <p class="post-content">{{ post.content }}</p>
+
+  <h4>Comments:</h4>
+  <ul class="comment-list">
+    <li *ngFor="let comment of post.comments">
+      <strong class="comment-username">username</strong> {{ comment.content }}
+    </li>
+  </ul>
+
+  <input [(ngModel)]="newCommentContent" placeholder="Add a comment..." class="comment-input"/>
+  <button (click)="addComment(post)" class="comment-button">Post</button>
+
+  <hr />
+</div>

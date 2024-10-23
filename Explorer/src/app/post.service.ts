@@ -1,0 +1,26 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Post } from './post.model';
+import { Comment } from './comment.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PostService {
+  private apiUrl = 'http://localhost:8080/api/posts';  // Backend URL
+
+  constructor(private http: HttpClient) {}
+
+  getPosts(): Observable<Post[]> {
+    return this.http.get<Post[]>(this.apiUrl);
+  }
+
+  likePost(id: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${id}/like`, {});
+  }
+
+  addComment(postId: number, comment: Comment): Observable<Comment> {
+    return this.http.post<Comment>(`${this.apiUrl}/${postId}/comments`, comment);
+  }
+}
