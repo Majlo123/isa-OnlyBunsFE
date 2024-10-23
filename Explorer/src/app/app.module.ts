@@ -1,45 +1,24 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';  // Dodaj ovo
+import { HttpClientModule } from '@angular/common/http';  // Za rad sa HTTP-om
 
-import { AppRoutingModule } from './infrastructure/routing/app-routing.module';
 import { AppComponent } from './app.component';
-import { LayoutModule } from './feature-modules/layout/layout.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './infrastructure/material/material.module';
-import { AdministrationModule } from './feature-modules/administration/administration.module';
-import { BlogModule } from './feature-modules/blog/blog.module';
-import { MarketplaceModule } from './feature-modules/marketplace/marketplace.module';
-import { TourAuthoringModule } from './feature-modules/tour-authoring/tour-authoring.module';
-import { TourExecutionModule } from './feature-modules/tour-execution/tour-execution.module';
-import { AuthModule } from './infrastructure/auth/auth.module';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
+import { PostListComponent } from './post-list/post-list.component';
+import { PostCreateComponent } from './post-create/post-create.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PostListComponent,
+    PostCreateComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    LayoutModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-    AdministrationModule,
-    BlogModule,
-    MarketplaceModule,
-    TourAuthoringModule,
-    TourExecutionModule,
-    AuthModule,
+    FormsModule,  // Dodaj FormsModule za ngModel
     HttpClientModule
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true,
-    },
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
