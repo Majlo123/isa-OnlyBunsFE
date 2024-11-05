@@ -1,0 +1,40 @@
+<div class="search-controls">
+  <input [(ngModel)]="searchParams.firstName" placeholder="Search by first name" />
+  <input [(ngModel)]="searchParams.lastName" placeholder="Search by last name" />
+  <input [(ngModel)]="searchParams.email" placeholder="Search by email" />
+  <input [(ngModel)]="searchParams.minPosts" placeholder="Min posts" type="number" />
+  <input [(ngModel)]="searchParams.maxPosts" placeholder="Max posts" type="number" />
+  <button (click)="searchUsers()">Search</button>
+</div>
+
+<div class="sort-controls">
+  <button (click)="sortUsersByFollowingCount()">Sort by followers count</button>
+  <button (click)="sortUsersByEmail()">Sort by email</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Post Count</th>
+      <th>Followers Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.firstName }}</td>
+      <td>{{ user.lastName }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.postCount }}</td>
+      <td>{{ user.followingCount }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="pagination-controls">
+  <button (click)="onPageChange(page - 1)" [disabled]="page === 0">Previous</button>
+  <span>Page {{ page + 1 }} of {{ totalPages }}</span>
+  <button (click)="onPageChange(page + 1)" [disabled]="(page + 1) >= totalPages">Next</button>
+</div>
