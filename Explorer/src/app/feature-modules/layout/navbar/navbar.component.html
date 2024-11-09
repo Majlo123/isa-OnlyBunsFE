@@ -1,5 +1,11 @@
-<nav class="navbar">
-  <ul>
-    <li><a routerLink="/user-account" routerLinkActive="active">All users</a></li>
-  </ul>
-</nav>
+<mat-toolbar color="primary">
+  <div>
+      
+      <div id="toolbar-content">
+        <p>OnlyBuns</p>
+        <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['/login']" routerLinkActive="active">Login</button>
+        <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button (click)="onLogout()">Logout</button>
+        <button color="accent" mat-raised-button [routerLink]="['/user-account']" routerLinkActive="active">All Accounts</button>     
+      </div>
+  </div>
+</mat-toolbar>

@@ -1,0 +1,54 @@
+/* Navbar styling */
+.navbar {
+    background-color: white; 
+    color: #004D3B;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.logo {
+    width: 50px;
+    margin-right: 10px;
+}
+
+/* Custom styles for raised buttons */
+.mat-raised-button {
+    background-color: transparent; 
+    color: #004D3B; 
+    border: none; 
+}
+
+.mat-raised-button:hover {
+    background-color: #bbe6e4 !important;  
+}
+
+/* Custom styles for normal buttons */
+.mat-button:hover {
+    background-color: #bbe6e4 !important; 
+}
+
+.custom-button {
+    background-color: transparent; 
+    color: #004D3B; 
+    border: none; 
+}
+
+.custom-button:hover{
+    background-color: #bbe6e4 !important; 
+}
+#toolbar-content {
+    display: flex;
+    align-items: center; /* Aligns items vertically in the center */
+    gap: 1rem; /* Adds spacing between the <p> and the button */
+  }

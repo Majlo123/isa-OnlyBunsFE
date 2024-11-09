@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { TokenStorage } from './jwt/token.service';
@@ -20,16 +20,26 @@ export class AuthService {
     private tokenStorage: TokenStorage,
     private router: Router) { }
 
-  login(login: Login): Observable<AuthenticationResponse> {
-    return this.http
-      .post<AuthenticationResponse>(environment.apiHost + 'users/login', login)
-      .pipe(
-        tap((authenticationResponse) => {
-          this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
-          this.setUser();
-        })
-      );
-  }
+    login(login: Login): Observable<AuthenticationResponse> {
+      console.log(login);
+      return this.http
+        .post(environment.apiHost + 'userAccount/login', login, { responseType: 'text' })
+        .pipe(
+          map((response: string) => {
+            if (response === "Email not verified") {
+              throw new Error(response);  // Handle unauthorized access
+            }
+            // Convert response to AuthenticationResponse
+            return { accessToken: response } as AuthenticationResponse;
+          }),
+          tap((authenticationResponse: AuthenticationResponse) => {
+            console.log("Token:", authenticationResponse.accessToken);
+            this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
+            this.setUser();
+          })
+        );
+    }
+  
 
   register(registration: Registration): Observable<AuthenticationResponse> {
     return this.http
