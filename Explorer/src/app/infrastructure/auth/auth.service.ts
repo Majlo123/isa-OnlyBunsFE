@@ -9,6 +9,7 @@ import { Login } from './model/login.model';
 import { AuthenticationResponse } from './model/authentication-response.model';
 import { User } from './model/user.model';
 import { Registration } from './model/registration.model';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -42,14 +43,10 @@ export class AuthService {
   
 
   register(registration: Registration): Observable<AuthenticationResponse> {
+    console.log("REGISTER" + registration)
     return this.http
-    .post<AuthenticationResponse>(environment.apiHost + 'users', registration)
-    .pipe(
-      tap((authenticationResponse) => {
-        this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
-        this.setUser();
-      })
-    );
+    .post<AuthenticationResponse>(environment.apiHost + 'userAccount/register', registration)
+    
   }
 
   logout(): void {

@@ -11,7 +11,7 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (request.url.includes('/userAccount/login')) {
+    if (request.url.includes('/userAccount/login') || request.url.includes('/userAccount/register')) {
       return next.handle(request);
     }
     const accessTokenRequest = request.clone({
