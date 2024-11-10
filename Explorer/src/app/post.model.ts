@@ -8,10 +8,12 @@ export class Post {
   likes: number;  // Broj lajkova
   comments: Comment[];  // Lista komentara
   deleted: boolean;  // Da li je post obrisan
+  userId: number;  // ID korisnika koji je kreirao post
 
   constructor() {
     this.likes = 0;  // Podrazumevano 0 lajkova
     this.comments = [];  // Inicijalizujemo praznu listu komentara
     this.deleted = false;  // Podrazumevano nije obrisan
+    this.userId = 0;  // Podrazumevano ID korisnika postavljen na 0 ili može biti null
   }
 }

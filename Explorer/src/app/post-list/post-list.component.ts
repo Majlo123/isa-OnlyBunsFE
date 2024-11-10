@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PostService } from '../post.service';
 import { Post } from '../post.model';
 import { Comment } from '../comment.model';
+import { UserAccountService } from '../user-account.service';
 
 @Component({
   selector: 'app-post-list',
@@ -11,9 +12,11 @@ import { Comment } from '../comment.model';
 export class PostListComponent implements OnInit {
 
   posts: Post[] = [];
-  newCommentContent: string = '';  // String vrednost za novi komentar
+  newCommentContent: string = '';
+  currentUserId: number = 1;
+  username: string = ''; // Add this line to define the username property
 
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService, private userService: UserAccountService) { }
 
   ngOnInit(): void {
     this.getPosts();
@@ -37,11 +40,18 @@ export class PostListComponent implements OnInit {
   }
 
   addComment(post: Post): void {
-    const newComment: Comment = { id: 0, content: this.newCommentContent };
+    const newComment: Comment = { id: 0, content: this.newCommentContent, userId: this.currentUserId };
 
     this.postService.addComment(post.id, newComment).subscribe((comment) => {
-      post.comments.push(comment);  // Lokalno dodajemo novi komentar
-      this.newCommentContent = '';  // Resetujemo input za komentar
+        post.comments.push(comment);
+        this.newCommentContent = '';
+    });
+  }
+
+  getUsernameById(userId: number): void {
+    this.userService.getUsernameById(userId).subscribe(username => {
+      console.log(username);
+      this.username = username; // Now this.username is defined and can be used
     });
   }
 }
