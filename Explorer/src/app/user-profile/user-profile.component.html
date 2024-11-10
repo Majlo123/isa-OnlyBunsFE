@@ -1,0 +1,15 @@
+<div class="profile-page">
+    <!-- Background Banner -->
+    <div class="banner"></div>
+  
+    <!-- Profile Card -->
+    <div class="profile-card">
+      <img class="profile-picture" [src]="'assets/images/profile-picture.jpg'" alt="Profile Picture" />
+  
+      <h1 class="user-name">{{ user.firstName }}</h1>
+      <p class="user-bio">{{ user.lastName }}</p>
+      <p class="user-location">{{ user.address.city }}</p>
+      <p class="user-email">{{ user.email }}</p>
+    </div>
+  </div>
+  

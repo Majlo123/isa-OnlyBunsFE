@@ -10,6 +10,7 @@ import { AuthenticationResponse } from './model/authentication-response.model';
 import { User } from './model/user.model';
 import { Registration } from './model/registration.model';
 import { FormGroup } from '@angular/forms';
+import { UserInfo } from './model/userInfo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +57,10 @@ export class AuthService {
       }
     );
   }
-
+  getUser(email: string | null): Observable<UserInfo> {
+    const emailParam = email ? encodeURIComponent(email) : '';
+    return this.http.get<UserInfo>(`${environment.apiHost}userAccount/getUserInfo?email=${emailParam}`);
+}
   checkIfUserExists(): void {
     const accessToken = this.tokenStorage.getAccessToken();
     if (accessToken == null) {
@@ -65,6 +69,7 @@ export class AuthService {
     this.setUser();
   }
 
+  
   private setUser(): void {
     const jwtHelperService = new JwtHelperService();
     const accessToken = this.tokenStorage.getAccessToken() || "";
