@@ -2,7 +2,7 @@
 <div *ngFor="let post of posts" class="post-container">
   <div class="post-header">
     <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture" />
-    <h3 class="username">{{ getUsernameById(post.userId) }}</h3>
+    <h3 class="username">{{ getUsernameById(post.userId) | async }}</h3>
   </div>
 
   <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="Post image" class="post-image" />
@@ -19,7 +19,7 @@
   <h4>Comments:</h4>
   <ul class="comment-list">
     <li *ngFor="let comment of post.comments">
-      <strong class="comment-username">{{ getUsernameById(comment.userId) }}</strong> {{ comment.content }}
+      <strong class="comment-username">{{ getUsernameById(comment.userId) | async }}</strong> {{ comment.content }}
     </li>
   </ul>
 

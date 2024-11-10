@@ -23,7 +23,7 @@ export class UserAccountService {
     return this.http.get(`${this.apiUrl}/search/email`, { params: { email } });
   }
   getUsernameById(userId: number): Observable<string> {
-    return this.http.get<string>(`${this.apiUrl}/${userId}/username`);
+    return this.http.get(`${this.apiUrl}/${userId}/username`, { responseType: 'text' });
   }
   searchByPostCount(min: number, max: number): Observable<any> {
     let params = new HttpParams();
