@@ -45,13 +45,13 @@ export class AuthService {
   register(registration: Registration): Observable<AuthenticationResponse> {
     console.log("REGISTER" + registration)
     return this.http
-      .post<AuthenticationResponse>(environment.apiHost + 'users', registration)
+      /*.post<AuthenticationResponse>(environment.apiHost + 'users', registration)
       .pipe(
         tap((authenticationResponse) => {
           this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
           this.setUser();
         })
-      );
+      );*/
     .post<AuthenticationResponse>(environment.apiHost + 'userAccount/register', registration)
     
   }
@@ -73,7 +73,10 @@ export class AuthService {
     }
     this.setUser();
   }
-
+  getEmailByUserId(userId: number): Observable<string> {
+    console.log("RETURN id: " + userId)
+    return this.http.get(`${environment.apiHost}userAccount/${userId}/email`, { responseType: 'text' })
+  }
   
   private setUser(): void {
     const accessToken = this.tokenStorage.getAccessToken() || "";
@@ -103,8 +106,9 @@ export class AuthService {
 
   // Getter za ID trenutnog korisnika
   getCurrentUserId(): number {
+    console.log("Get current user id: " + this.user$.value.id)
     return this.user$.value.id;
   }
 }
 
-}
+

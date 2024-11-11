@@ -10,8 +10,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./user-profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-    email: string | null = null;
-
+    email: string;
+    userId: number | null = null;
     user: UserInfo;
 
   constructor(private authService: AuthService, private route: ActivatedRoute) { 
@@ -19,11 +19,17 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void { 
     console.log("INSIDE")
-    this.email = this.route.snapshot.paramMap.get('email');
+    this.userId = Number(this.route.snapshot.paramMap.get('userId'));
     this.getUser();
   }
   getUser(): void {
-    this.authService.getUser(this.email).subscribe(
+    console.log("User id: " + this.userId)
+    if(this.userId !== null)
+      this.authService.getEmailByUserId(this.userId).subscribe(
+        (data: string) => {
+          this.email = data;
+          console.log("Email: " + this.email)
+          this.authService.getUser(this.email).subscribe(
         (data: UserInfo) => {
           this.user = data;
         },
@@ -31,5 +37,8 @@ export class ProfileComponent implements OnInit {
           console.error('Error fetching user', error);
         }
       );
+        }
+      )
+    
   }
 }

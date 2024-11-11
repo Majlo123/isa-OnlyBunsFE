@@ -2,7 +2,9 @@
 <div *ngFor="let post of posts" class="post-container">
   <div class="post-header">
     <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture" />
-    <h3 class="username">{{ getUsernameById(post.userId) | async }}</h3>
+    <h3 class="username">
+      <a *ngIf="post.userId !== 0" [routerLink]="['/user-profile',post.userId]">{{ getUsernameById(post.userId) | async }}</a>
+    </h3>
   </div>
 
   <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="Post image" class="post-image" />
