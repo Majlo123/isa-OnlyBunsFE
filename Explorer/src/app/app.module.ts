@@ -12,13 +12,15 @@ import { LayoutModule } from './feature-modules/layout/layout.module';
 import { AuthGuard } from './infrastructure/auth/auth.guard';
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
+import { MyPostsComponent } from './my-posts/my-posts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PostListComponent,
     PostCreateComponent,
-    UserAccountComponent
+    UserAccountComponent,
+    MyPostsComponent
   ],
   imports: [
     BrowserModule,

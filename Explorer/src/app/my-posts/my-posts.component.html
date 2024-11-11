@@ -1,0 +1,32 @@
+<h1 class="app-title">My Posts</h1>
+
+<div *ngFor="let post of posts" class="post-container">
+  <div class="post-header">
+    <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture" />
+  </div>
+
+  <!-- Prikaz slike objave ako postoji -->
+  <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="Post image" class="post-image" />
+
+  <!-- Akcije za uređivanje i brisanje objave -->
+  <div *ngIf="editingPostId === post.id">
+    <textarea [(ngModel)]="editedContent" class="edit-textarea"></textarea>
+    <button (click)="saveEdit(post.id)">Save</button>
+    <button (click)="cancelEdit()">Cancel</button>
+  </div>
+  <div *ngIf="editingPostId !== post.id">
+    <p class="post-content">{{ post.description }}</p>
+    <button (click)="startEditing(post)">Edit</button>
+    <button (click)="deletePost(post.id)">Delete</button>
+  </div>
+
+  <!-- Prikaz komentara -->
+  <h4>Comments:</h4>
+  <ul class="comment-list">
+    <li *ngFor="let comment of post.comments">
+      <strong class="comment-username">{{ getUsernameById(comment.userId) | async }}</strong> {{ comment.content }}
+    </li>
+  </ul>
+
+  <hr />
+</div>

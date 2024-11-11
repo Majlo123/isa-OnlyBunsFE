@@ -131,6 +131,10 @@ body {
   border-top: 1px solid #efefef;
   background-color: #fafafa;
 }
+.liked {
+  font-weight: bold;
+  color: red; /* Možete promeniti u boju po želji */
+}
 
 .comment-input {
   flex-grow: 1;

@@ -16,46 +16,51 @@ import { UserInfo } from './model/userInfo.model';
   providedIn: 'root'
 })
 export class AuthService {
-  user$ = new BehaviorSubject<User>({username: "", id: 0, role: "" });
+  user$ = new BehaviorSubject<User>({ username: "", id: 0, role: "" });
+  private jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient,
+  constructor(
+    private http: HttpClient,
     private tokenStorage: TokenStorage,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
-    login(login: Login): Observable<AuthenticationResponse> {
-      console.log(login);
-      return this.http
-        .post(environment.apiHost + 'userAccount/login', login, { responseType: 'text' })
-        .pipe(
-          map((response: string) => {
-            if (response === "Email not verified") {
-              throw new Error(response);  // Handle unauthorized access
-            }
-            // Convert response to AuthenticationResponse
-            return { accessToken: response } as AuthenticationResponse;
-          }),
-          tap((authenticationResponse: AuthenticationResponse) => {
-            console.log("Token:", authenticationResponse.accessToken);
-            this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
-            this.setUser();
-          })
-        );
-    }
-  
+  login(login: Login): Observable<AuthenticationResponse> {
+    return this.http
+      .post(environment.apiHost + 'userAccount/login', login, { responseType: 'text' })
+      .pipe(
+        map((response: string) => {
+          if (response === "Email not verified") {
+            throw new Error(response);
+          }
+          return { accessToken: response } as AuthenticationResponse;
+        }),
+        tap((authenticationResponse: AuthenticationResponse) => {
+          this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
+          this.setUser();
+        })
+      );
+  }
 
   register(registration: Registration): Observable<AuthenticationResponse> {
     console.log("REGISTER" + registration)
     return this.http
+      .post<AuthenticationResponse>(environment.apiHost + 'users', registration)
+      .pipe(
+        tap((authenticationResponse) => {
+          this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
+          this.setUser();
+        })
+      );
     .post<AuthenticationResponse>(environment.apiHost + 'userAccount/register', registration)
     
   }
 
   logout(): void {
-    this.router.navigate(['/home']).then(_ => {
+    this.router.navigate(['/home']).then(() => {
       this.tokenStorage.clear();
-      this.user$.next({username: "", id: 0, role: "" });
-      }
-    );
+      this.user$.next({ username: "", id: 0, role: "" });
+    });
   }
   getUser(email: string | null): Observable<UserInfo> {
     const emailParam = email ? encodeURIComponent(email) : '';
@@ -71,15 +76,35 @@ export class AuthService {
 
   
   private setUser(): void {
-    const jwtHelperService = new JwtHelperService();
     const accessToken = this.tokenStorage.getAccessToken() || "";
+
+    if (!accessToken) {
+      console.error('Access token not found.');
+      return;
+    }
+
+    const decodedToken = this.jwtHelper.decodeToken(accessToken);
+    console.log('Decoded token:', decodedToken); // Provera sadržaja tokena
+
     const user: User = {
-      id: +jwtHelperService.decodeToken(accessToken).id,
-      username: jwtHelperService.decodeToken(accessToken).username,
-      role: jwtHelperService.decodeToken(accessToken)[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-      ],
+      id: +decodedToken.userId,       // Proveravamo `userId` iz tokena
+      username: decodedToken.sub,     // Koristimo `sub` kao `username`
+      role: decodedToken.role || decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
     };
+
+    if (isNaN(user.id)) {
+      console.error("User ID is missing or invalid in the decoded token.");
+      user.id = 0; // Postavljanje na 0 ako je ID nevažeći
+    }
+
+    console.log('Setting user:', user); // Provera postavljanja korisnika
     this.user$.next(user);
   }
+
+  // Getter za ID trenutnog korisnika
+  getCurrentUserId(): number {
+    return this.user$.value.id;
+  }
+}
+
 }
