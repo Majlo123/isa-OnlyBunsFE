@@ -8,13 +8,15 @@
   <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="Post image" class="post-image" />
 
   <div class="post-actions">
-    <button (click)="likePost(post)">
-      <img src="assets/images/like.jpg" alt="Like" class="action-icon" />
+    <button (click)="likePost(post)" [disabled]="post.likedByCurrentUser">
+      <img [ngClass]="{'liked': post.likedByCurrentUser}" src="assets/images/like.jpg" alt="Like" class="action-icon" />
     </button>
-    <span class="like-count">{{ post.likes }} likes</span>
+    <span [ngClass]="{'liked': post.likedByCurrentUser}" class="like-count">{{ post.likes }} likes</span>
   </div>
 
-  <p class="post-content">{{ post.content }}</p>
+
+
+  <p class="post-content">{{ post.description }}</p>
 
   <h4>Comments:</h4>
   <ul class="comment-list">
@@ -23,7 +25,7 @@
     </li>
   </ul>
 
-  <input [(ngModel)]="newCommentContent" placeholder="Add a comment..." class="comment-input"/>
+  <input [(ngModel)]="post.newCommentContent" placeholder="Add a comment..." class="comment-input"/>
   <button (click)="addComment(post)" class="comment-button">Post</button>
 
   <hr />

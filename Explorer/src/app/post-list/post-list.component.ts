@@ -35,19 +35,28 @@ export class PostListComponent implements OnInit {
   }
 
   likePost(post: Post): void {
-    this.postService.likePost(post.id).subscribe(() => {
-      post.likes += 1;
-    });
-  }
+    // Proveravamo da li je korisnik već lajkovao post
+    if (!post.likedByCurrentUser) {
+        // Ako nije, uvećavamo broj lajkova i označavamo da je lajkovao
+        post.likes += 1;
+        post.likedByCurrentUser = true;
+
+        // Ovde možete dodati poziv ka serveru (ako imate backend) da sačuvate lajk
+        this.postService.likePost(post.id).subscribe();
+    }
+}
+
 
   addComment(post: Post): void {
-    const newComment: Comment = { id: 0, content: this.newCommentContent, userId: this.currentUserId };
+    // Kreiranje novog komentara koristeći post.newCommentContent umesto this.newCommentContent
+    const newComment: Comment = { id: 0, content: post.newCommentContent, userId: this.currentUserId };
 
     this.postService.addComment(post.id, newComment).subscribe((comment) => {
-      post.comments.push(comment);
-      this.newCommentContent = '';
+      post.comments.push(comment);  // Dodavanje komentara u specifičnu objavu
+      post.newCommentContent = '';  // Resetovanje input polja za taj post
     });
-  }
+}
+
 
   getUsernameById(userId: number): Observable<string | undefined> {
     if (!this.usernamesCache.has(userId)) {

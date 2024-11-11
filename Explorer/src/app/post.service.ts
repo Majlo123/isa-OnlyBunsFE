@@ -21,7 +21,15 @@ export class PostService {
   }
 
   addComment(postId: number, comment: Comment): Observable<Comment> {
-    // Prosleđuje kompletan `Comment` objekat sa poljem `userId` na backend
     return this.http.post<Comment>(`${this.apiUrl}/${postId}/comments`, comment);
+  }
+  getPostsByUserId(userId: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.apiUrl}/user/${userId}`);
+  }
+  deletePost(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+  updatePost(postId: number, content: string): Observable<Post> {
+    return this.http.put<Post>(`${this.apiUrl}/${postId}`, { description: content });
   }
 }

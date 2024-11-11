@@ -1,9 +1,8 @@
 export class Comment {
   id: number;
   content: string;
-  userId: number;  
-
+  userId: number;
   constructor() {
-    this.userId = 0; 
+    this.userId = 0;
   }
 }
