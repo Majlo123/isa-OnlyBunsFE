@@ -9,6 +9,8 @@ import { Login } from './model/login.model';
 import { AuthenticationResponse } from './model/authentication-response.model';
 import { User } from './model/user.model';
 import { Registration } from './model/registration.model';
+import { FormGroup } from '@angular/forms';
+import { UserInfo } from './model/userInfo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +43,7 @@ export class AuthService {
   }
 
   register(registration: Registration): Observable<AuthenticationResponse> {
+    console.log("REGISTER" + registration)
     return this.http
       .post<AuthenticationResponse>(environment.apiHost + 'users', registration)
       .pipe(
@@ -49,6 +52,8 @@ export class AuthService {
           this.setUser();
         })
       );
+    .post<AuthenticationResponse>(environment.apiHost + 'userAccount/register', registration)
+    
   }
 
   logout(): void {
@@ -57,7 +62,10 @@ export class AuthService {
       this.user$.next({ username: "", id: 0, role: "" });
     });
   }
-
+  getUser(email: string | null): Observable<UserInfo> {
+    const emailParam = email ? encodeURIComponent(email) : '';
+    return this.http.get<UserInfo>(`${environment.apiHost}userAccount/getUserInfo?email=${emailParam}`);
+}
   checkIfUserExists(): void {
     const accessToken = this.tokenStorage.getAccessToken();
     if (accessToken == null) {
@@ -66,6 +74,7 @@ export class AuthService {
     this.setUser();
   }
 
+  
   private setUser(): void {
     const accessToken = this.tokenStorage.getAccessToken() || "";
 
@@ -96,4 +105,6 @@ export class AuthService {
   getCurrentUserId(): number {
     return this.user$.value.id;
   }
+}
+
 }

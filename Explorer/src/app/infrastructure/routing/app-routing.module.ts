@@ -8,6 +8,8 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { PostListComponent } from '../../post-list/post-list.component'; // Import PostListComponent
 import { MyPostsComponent } from '../../my-posts/my-posts.component';
+import { ProfileComponent } from 'src/app/user-profile/user-profile.component';
+
 const routes: Routes = [
   { path: '', redirectTo: '/posts', pathMatch: 'full' }, // PostListComponent kao početna stranica
   { path: 'home', component: HomeComponent },
@@ -16,7 +18,9 @@ const routes: Routes = [
   { path: 'user-account', component: UserAccountComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostListComponent },
   { path: 'my-posts', component: MyPostsComponent },// Ruta za PostListComponent
+  { path: 'user-profile/:email', component: ProfileComponent },
   { path: '**', redirectTo: '/posts' } // Preusmerenje za nepostojeće rute
+  
 ];
 
 @NgModule({

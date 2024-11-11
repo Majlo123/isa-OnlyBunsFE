@@ -7,7 +7,9 @@
         <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button (click)="onLogout()">Logout</button>
         <button *ngIf="user && user.role === 'administrator'" color="accent" mat-raised-button [routerLink]="['/user-account']" routerLinkActive="active">All Accounts</button>
         <button color="accent" mat-raised-button [routerLink]="['/posts']" routerLinkActive="active">Posts</button>
-        <button *ngIf="user" color="accent" mat-raised-button [routerLink]="['/my-posts']" routerLinkActive="active">My posts</button>
+        <button *ngIf="user" color="accent" mat-raised-button [routerLink]="['/my-posts']" routerLinkActive="active">My posts</button>   
+        <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['/register']" routerLinkActive="active">Register</button>     
+      
       </div>
   </div>
 </mat-toolbar>
