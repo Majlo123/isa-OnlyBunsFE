@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'user-account', component: UserAccountComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostListComponent },
-  { path: 'my-posts', component: MyPostsComponent },// Ruta za PostListComponent
+  { path: 'my-posts', component: MyPostsComponent, canActivate: [AuthGuard] },// Ruta za PostListComponent
   { path: 'user-profile/:userId', component: ProfileComponent },
   { path: '**', redirectTo: '/posts' } // Preusmerenje za nepostojeće rute
   

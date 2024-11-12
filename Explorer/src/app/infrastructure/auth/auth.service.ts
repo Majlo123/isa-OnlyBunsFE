@@ -57,7 +57,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.router.navigate(['/home']).then(() => {
+    this.router.navigate(['/login']).then(() => {
       this.tokenStorage.clear();
       this.user$.next({ username: "", id: 0, role: "" });
     });
