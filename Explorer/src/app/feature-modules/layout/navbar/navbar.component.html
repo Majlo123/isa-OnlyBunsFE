@@ -8,8 +8,11 @@
         <button *ngIf="user && user.role === 'administrator'" color="accent" mat-raised-button [routerLink]="['/user-account']" routerLinkActive="active">All Accounts</button>
         <button color="accent" mat-raised-button [routerLink]="['/posts']" routerLinkActive="active">Posts</button>
         <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button [routerLink]="['/my-posts']" routerLinkActive="active">My posts</button>   
-        <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['/register']" routerLinkActive="active">Register</button>     
-      
+        <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['/register']" routerLinkActive="active">Register</button>  
+        <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['/trends']" routerLinkActive="active">Trends</button>  
+        <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button [routerLink]="['/chats']" routerLinkActive="active">Chats</button>  
+        <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['/maps']" routerLinkActive="active">Map Posts</button>  
+        <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button [routerLink]="['/post-create']" routerLinkActive="active">Add Post</button>  
       </div>
   </div>
 </mat-toolbar>

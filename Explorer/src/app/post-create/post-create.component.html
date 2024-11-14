@@ -1,4 +1,18 @@
-<h3>Create New Post</h3>
-<input [(ngModel)]="postTitle" placeholder="Post title" />
-<textarea [(ngModel)]="postContent" placeholder="Post content"></textarea>
-<button (click)="createPost()">Create Post</button>
+<div>
+    <h3>Create New Post</h3>
+    <form [formGroup]="postForm" >
+        <div class="new-post-div">
+            <input formControlName="description" type="text" required placeholder="Description"><br>
+            <input formControlName="longitude" type="number" required placeholder="Longitude"><br>
+            <input formControlName="latitude" type="number" required placeholder="Latitude"><br>
+            <label>Upload Image</label>
+            <input type="file" (change)="onFileSelected($event)"><br>
+            
+            <button type="submit" color="primary" (click)="createPost()">Create Post</button>
+                    
+        </div>
+    </form>
+
+    <!--place for a map-->
+</div>
+
