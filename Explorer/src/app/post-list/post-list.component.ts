@@ -31,8 +31,9 @@ export class PostListComponent implements OnInit {
     this.postService.getPosts().subscribe(
       (data: Post[]) => {
         this.posts = data;
+        console.log("Num of posts: " + data)
         this.posts.forEach(element => {
-          console.log("Num of posts: " + element.userId)
+          
         });
       },
       (error) => {
