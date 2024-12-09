@@ -41,4 +41,7 @@ export class ProfileComponent implements OnInit {
       )
     
   }
+  changeFirstName(): void{
+    
+  }
 }

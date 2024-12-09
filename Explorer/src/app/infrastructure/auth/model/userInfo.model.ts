@@ -6,4 +6,5 @@ export interface UserInfo {
     address: Address;
     firstName: string;
     lastName: string;
+    followersCount: number;
 }

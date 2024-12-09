@@ -6,10 +6,11 @@
     <div class="profile-card">
       <img class="profile-picture" [src]="'assets/images/profile-picture.jpg'" alt="Profile Picture" />
   
-      <h1 class="user-name">{{ user.firstName }}</h1>
+      <h1 class="user-name">{{ user.firstName }} <button (click)="changeFirstName()">Change</button></h1>
       <p class="user-bio">{{ user.lastName }}</p>
-      <p class="user-location">{{ user.address.city }}</p>
+      <p class="user-location">{{ user.address.country }}, {{ user.address.city }}, {{user.address.street}}, {{user.address.number}}</p>
       <p class="user-email">{{ user.email }}</p>
+      <p class="user-email">Followers: {{ user.followersCount }}</p>
     </div>
   </div>
   
