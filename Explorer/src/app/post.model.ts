@@ -11,6 +11,10 @@ export class Post {
   comments: Comment[];  // Lista komentara
   deleted: boolean;  // Da li je post obrisan
   userId: number;  // ID korisnika koji je kreirao post
+  longitude: number;
+  latitude: number;
+  dateOfCreation: Date;
+  imageBase64: string;
 
   constructor() {
     this.likes = 0;  // Podrazumevano 0 lajkova

@@ -9,6 +9,7 @@ import { RegistrationComponent } from '../auth/registration/registration.compone
 import { PostListComponent } from '../../post-list/post-list.component'; // Import PostListComponent
 import { MyPostsComponent } from '../../my-posts/my-posts.component';
 import { ProfileComponent } from 'src/app/user-profile/user-profile.component';
+import { PostCreateComponent } from 'src/app/post-create/post-create.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/posts', pathMatch: 'full' }, // PostListComponent kao početna stranica
@@ -18,8 +19,9 @@ const routes: Routes = [
   { path: 'user-account', component: UserAccountComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostListComponent },
   { path: 'my-posts', component: MyPostsComponent, canActivate: [AuthGuard] },// Ruta za PostListComponent
+  { path: 'post-create', component: PostCreateComponent},
   { path: 'user-profile/:userId', component: ProfileComponent },
-  { path: '**', redirectTo: '/posts' } // Preusmerenje za nepostojeće rute
+  { path: '**', redirectTo: '/posts' }, // Preusmerenje za nepostojeće rute
   
 ];
 

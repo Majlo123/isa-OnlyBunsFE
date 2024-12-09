@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-
 import { AppComponent } from './app.component';
 import { PostListComponent } from './post-list/post-list.component';
 import { PostCreateComponent } from './post-create/post-create.component';
