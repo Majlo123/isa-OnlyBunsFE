@@ -39,4 +39,8 @@ export class PostService {
   createPost(post: Post): Observable<Post> {
     return this.http.post<Post>(this.apiUrl,  post);
   }
+  getPostsByFollowing(userId: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`http://localhost:8080/api/posts/following/${userId}`);
+  }
+
 }
