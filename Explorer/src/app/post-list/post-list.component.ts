@@ -18,6 +18,7 @@ export class PostListComponent implements OnInit {
   newCommentContent: string = '';
   currentUserId: number = 1;
   usernamesCache: Map<number, BehaviorSubject<string | undefined>> = new Map();
+  canComment: boolean = true;
 
   constructor(
     private postService: PostService,
@@ -33,13 +34,10 @@ export class PostListComponent implements OnInit {
   }
 
   getPosts(): void {
-    // Pozivamo novi endpoint da bismo dobili postove korisnika koje pratimo
     this.postService.getPostsByFollowing(this.currentUserId).subscribe(
       (data: Post[]) => {
         this.posts = data;
-        this.posts.forEach((element) => {
-          console.log('Num of posts: ' + element.userId);
-        });
+        console.log('Postovi:', this.posts);
       },
       (error) => {
         console.error('Error fetching posts', error);
@@ -48,7 +46,7 @@ export class PostListComponent implements OnInit {
   }
 
   likePost(post: Post): void {
-    if (this.authService.getCurrentUserId() != 0) {
+    if (this.authService.getCurrentUserId() !== 0) {
       if (!post.likedByCurrentUser) {
         post.likes += 1;
         post.likedByCurrentUser = true;
@@ -60,11 +58,20 @@ export class PostListComponent implements OnInit {
   }
 
   addComment(post: Post): void {
-    if (this.authService.getCurrentUserId() != 0) {
-      const newComment: Comment = { id: 0, content: post.newCommentContent, userId: this.currentUserId };
-      this.postService.addComment(post.id, newComment).subscribe((comment) => {
-        post.comments.push(comment);
-        post.newCommentContent = '';
+    if (this.authService.getCurrentUserId() !== 0) {
+      const newComment: Comment = { id: 0, content: post.newCommentContent, userId: this.currentUserId, createdAt: new Date() };
+
+      this.postService.addComment(post.id, newComment).subscribe({
+        next: (comment) => {
+          post.comments.push(comment);
+          post.newCommentContent = '';
+          console.log('Comment added by user ID:', comment.userId);
+        },
+        error: (error) => {
+          if (error.status === 400) {
+            alert('You have reached the limit of 60 comments per hour.');
+          }
+        }
       });
     } else {
       this.router.navigate(['/login']);

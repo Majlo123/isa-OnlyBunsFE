@@ -14,6 +14,8 @@ import { AuthModule } from './infrastructure/auth/auth.module';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
 import { MyPostsComponent } from './my-posts/my-posts.component';
 import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import this
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     LayoutModule,
     CommonModule ,
-    AppRoutingModule
+    AppRoutingModule,
+    MatInputModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthGuard,
     {
