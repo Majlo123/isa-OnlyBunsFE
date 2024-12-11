@@ -12,6 +12,8 @@ import { AuthGuard } from './infrastructure/auth/auth.guard';
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
 import { MyPostsComponent } from './my-posts/my-posts.component';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import this
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { MyPostsComponent } from './my-posts/my-posts.component';
     ReactiveFormsModule, // Dodaj ako koristiš reaktivne forme
     HttpClientModule,
     LayoutModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatInputModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthGuard,
     {

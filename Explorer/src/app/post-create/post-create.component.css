@@ -1,0 +1,36 @@
+.postFormContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Full viewport height */
+  }
+  
+  .postForm {
+    background-color: #ffffff; /* White background for the form */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width:  400px; /* Adjust width as needed */
+    text-align: center;
+  }
+  
+  .formTitle {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    display: block;
+  }
+  
+  mat-form-field {
+    width: 100%; /* Ensure fields stretch to full width */
+    margin-bottom: 15px;
+  }
+  
+  .fileUpload {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  button {
+    width: 100%; /* Make the button full-width */
+  }
+  

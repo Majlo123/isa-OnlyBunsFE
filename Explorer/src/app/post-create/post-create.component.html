@@ -1,18 +1,31 @@
-<div>
-    <h3>Create New Post</h3>
-    <form [formGroup]="postForm" >
-        <div class="new-post-div">
-            <input formControlName="description" type="text" required placeholder="Description"><br>
-            <input formControlName="longitude" type="number" required placeholder="Longitude"><br>
-            <input formControlName="latitude" type="number" required placeholder="Latitude"><br>
-            <label>Upload Image</label>
-            <input type="file" (change)="onFileSelected($event)"><br>
-            
-            <button type="submit" color="primary" (click)="createPost()">Create Post</button>
-                    
+<div class="postFormContainer">
+    <div class="postForm">
+      <label class="formTitle">Create New Post</label>
+      <form [formGroup]="postForm">
+        <div>
+          <mat-form-field>
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" type="text" />
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Longitude</mat-label>
+            <input matInput formControlName="longitude" type="number" />
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Latitude</mat-label>
+            <input matInput formControlName="latitude" type="number" />
+          </mat-form-field>
+  
+          <div class="fileUpload">
+            <mat-label>Picture: </mat-label>
+            <input formControlName="picture" type="file" (change)="onFileSelected($event)" />
+          </div>
+  
+          <button mat-raised-button type="submit" color="primary" (click)="createPost()">Create Post</button>
         </div>
-    </form>
-
-    <!--place for a map-->
-</div>
-
+      </form>
+    </div>
+  </div>
+  
