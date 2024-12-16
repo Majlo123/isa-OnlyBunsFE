@@ -37,4 +37,13 @@ export class UserAccountService {
   sortByEmail(): Observable<any> {
     return this.http.get(`${this.apiUrl}/sort/email`);
   }
+  followUser(currentUserId: number, userId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${currentUserId}/follow/${userId}`, {});
+  }
+  isFollowing(currentUserId: number, userId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/${currentUserId}/follows/${userId}`);
+  }
+  unfollowUser(currentUserId: number, userId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${currentUserId}/unfollow/${userId}`, {});
+  }
 }

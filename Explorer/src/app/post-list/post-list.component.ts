@@ -18,84 +18,74 @@ export class PostListComponent implements OnInit {
   newCommentContent: string = '';
   currentUserId: number = 1;
   usernamesCache: Map<number, BehaviorSubject<string | undefined>> = new Map();
+  canComment: boolean = true;
 
-  constructor(private postService: PostService, private router: Router, private userService: UserAccountService, private authService: AuthService) {}
+  constructor(
+    private postService: PostService,
+    private router: Router,
+    private userService: UserAccountService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.currentUserId = this.authService.getCurrentUserId();
-    console.log("Current user id post list: " + this.currentUserId)
+    console.log('Current user id post list: ' + this.currentUserId);
     this.getPosts();
   }
 
   getPosts(): void {
-    this.postService.getPosts().subscribe(
+    this.postService.getPostsByFollowing(this.currentUserId).subscribe(
       (data: Post[]) => {
         this.posts = data;
-        this.posts.forEach(element => {
-          console.log("Num of posts: " + element.userId)
-        });
+        console.log('Postovi:', this.posts);
       },
       (error) => {
         console.error('Error fetching posts', error);
       }
     );
-    
   }
-  getEmailByUserId(userId: number): string{
-    var email = ''
-    this.authService.getEmailByUserId(userId).subscribe(
-      (data: string) => {
-        email = data
-      },
-      (error) => {
-        console.error('Error fetching posts', error)
-       
-      }
-      )
-      console.log("Email: " + email)
-      return email
-    
-  }
+
   likePost(post: Post): void {
-    // Proveravamo da li je korisnik već lajkovao post
-    if(this.authService.getCurrentUserId() != 0){
-     if (!post.likedByCurrentUser) {
-          // Ako nije, uvećavamo broj lajkova i označavamo da je lajkovao
-          post.likes += 1;
-          post.likedByCurrentUser = true;
-
-          // Ovde možete dodati poziv ka se rveru (ako imate backend) da sačuvate lajk
-          this.postService.likePost(post.id).subscribe();
+    if (this.authService.getCurrentUserId() !== 0) {
+      if (!post.likedByCurrentUser) {
+        post.likes += 1;
+        post.likedByCurrentUser = true;
+        this.postService.likePost(post.id).subscribe();
       }
-  } else{
-    this.router.navigate(['/login'])
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
-}
-
 
   addComment(post: Post): void {
-    if(this.authService.getCurrentUserId() != 0){
-    // Kreiranje novog komentara koristeći post.newCommentContent umesto this.newCommentContent
-    const newComment: Comment = { id: 0, content: post.newCommentContent, userId: this.currentUserId };
+    if (this.authService.getCurrentUserId() !== 0) {
+      const newComment: Comment = { id: 0, content: post.newCommentContent, userId: this.currentUserId, createdAt: new Date() };
 
-    this.postService.addComment(post.id, newComment).subscribe((comment) => {
-      post.comments.push(comment);  // Dodavanje komentara u specifičnu objavu
-      post.newCommentContent = '';  // Resetovanje input polja za taj post
-    });
-  } else{
-    this.router.navigate(['/login'])
+      this.postService.addComment(post.id, newComment).subscribe({
+        next: (comment) => {
+          post.comments.push(comment);
+          post.newCommentContent = '';
+          console.log('Comment added by user ID:', comment.userId);
+        },
+        error: (error) => {
+          if (error.status === 400) {
+            alert('You have reached the limit of 60 comments per hour.');
+          }
+        }
+      });
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
-}
-
 
   getUsernameById(userId: number): Observable<string | undefined> {
     if (!this.usernamesCache.has(userId)) {
       const usernameSubject = new BehaviorSubject<string | undefined>(undefined);
       this.usernamesCache.set(userId, usernameSubject);
-      console.log("Get username by id: " + userId);
+      console.log('Get username by id: ' + userId);
       this.userService.getUsernameById(userId).pipe(take(1)).subscribe(
         (username) => {
-          console.log("Username: " + username)
+          console.log('Username: ' + username);
           usernameSubject.next(username);
         },
         (error) => {
@@ -103,6 +93,6 @@ export class PostListComponent implements OnInit {
         }
       );
     }
-    return this.usernamesCache.get(userId)!.asObservable(); // Vraća Observable za async pipe
+    return this.usernamesCache.get(userId)!.asObservable();
   }
 }
