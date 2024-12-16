@@ -37,7 +37,10 @@ export class PostListComponent implements OnInit {
     this.postService.getPostsByFollowing(this.currentUserId).subscribe(
       (data: Post[]) => {
         this.posts = data;
-        console.log('Postovi:', this.posts);
+        console.log("Num of posts: " + data)
+        this.posts.forEach(element => {
+          
+        });
       },
       (error) => {
         console.error('Error fetching posts', error);
@@ -46,11 +49,15 @@ export class PostListComponent implements OnInit {
   }
 
   likePost(post: Post): void {
-    if (this.authService.getCurrentUserId() !== 0) {
-      if (!post.likedByCurrentUser) {
-        post.likes += 1;
-        post.likedByCurrentUser = true;
-        this.postService.likePost(post.id).subscribe();
+    // Proveravamo da li je korisnik već lajkovao post
+    if(this.authService.getCurrentUserId() !== 0){
+     if (!post.likedByCurrentUser) {
+          // Ako nije, uvećavamo broj lajkova i označavamo da je lajkovao
+          post.likes += 1;
+          post.likedByCurrentUser = true;
+
+          // Ovde možete dodati poziv ka se rveru (ako imate backend) da sačuvate lajk
+          this.postService.likePost(post.id,this.currentUserId).subscribe();
       }
     } else {
       this.router.navigate(['/login']);

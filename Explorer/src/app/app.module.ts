@@ -13,6 +13,8 @@ import { AuthGuard } from './infrastructure/auth/auth.guard';
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
 import { MyPostsComponent } from './my-posts/my-posts.component';
+
+import { TrendsComponent } from './trends/trends.component';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import this
@@ -24,7 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
     PostCreateComponent,
     UserAccountComponent,
     MyPostsComponent,
-    ProfileComponent
+    ProfileComponent,
+    TrendsComponent
   ],
   imports: [
     BrowserModule,

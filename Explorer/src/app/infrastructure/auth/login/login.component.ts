@@ -30,7 +30,8 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(login).subscribe({
         next: () => {
-          this.router.navigate(['/']);
+          console.log("User id: " + this.authService.user$.value.id)
+          this.router.navigate(['/user-account', this.authService.user$.value.id]);
         },
         error: (error: HttpErrorResponse) => {
           // ispis u konzolu da vidimo što dobijamo

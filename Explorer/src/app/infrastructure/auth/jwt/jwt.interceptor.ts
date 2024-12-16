@@ -12,8 +12,10 @@ export class JwtInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (request.url.includes('/userAccount/login') || request.url.includes('/userAccount/register') || 
-    request.url.includes('/posts') || request.url.includes('/userAccount/getUserInfo') || 
-    request.url.match(new RegExp('/userAccount/\\d+/username')) || request.url.match(new RegExp('/userAccount/\\d+/email'))) {
+    request.url.includes('/api/posts') || request.url.includes('/userAccount/getUserInfo') || 
+    request.url.match(new RegExp('/userAccount/\\d+/username')) || request.url.match(new RegExp('/userAccount/\\d+/email'))
+    || request.url.includes('/changeUserInfo') || request.url.includes('/changeUserInfo/address')
+    || request.url.includes('/changeUserInfo/password') || request.url.includes('/api/likes')) {
       return next.handle(request);
     }
     const accessTokenRequest = request.clone({
