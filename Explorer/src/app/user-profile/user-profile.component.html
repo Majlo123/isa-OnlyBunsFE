@@ -6,11 +6,97 @@
     <div class="profile-card">
       <img class="profile-picture" [src]="'assets/images/profile-picture.jpg'" alt="Profile Picture" />
   
-      <h1 class="user-name">{{ user.firstName }} <button (click)="changeFirstName()">Change</button></h1>
+      <p class="user-name">{{ user.firstName }} <button (click)="openFirstNameModal()" class="btn btn-link"><i class="bi bi-pencil"></i></button></p>
       <p class="user-bio">{{ user.lastName }}</p>
-      <p class="user-location">{{ user.address.country }}, {{ user.address.city }}, {{user.address.street}}, {{user.address.number}}</p>
+      <p class="user-location">{{ user.address.country }}, {{ user.address.city }}, {{user.address.street}}, {{user.address.number}}
+        <button (click)="openAddressModal()" class="btn btn-link"><i class="bi bi-pencil"></i></button>
+      </p>
       <p class="user-email">{{ user.email }}</p>
       <p class="user-email">Followers: {{ user.followersCount }}</p>
+      <div style="display: flex; align-items: center; gap: 8px;">
+      <p>Change password</p>
+      <button (click)="openPasswordModal()" class="btn btn-link">
+         <i class="bi bi-pencil"></i>
+        
+    </button>
     </div>
+    </div>
+
+
+    <ng-template #firstNameModal let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Change First Name</h4>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #firstNameForm="ngForm" (ngSubmit)="changeFirstName()">
+          <div class="form-group">
+            <label for="firstName">Enter new name:</label>
+            <input type="text" class="form-control" id="firstName" [(ngModel)]="newUser.firstName" name="firstName" required>
+            <label for="lastName">Enter new last name:</label>
+            <input type="text" class="form-control" id="lastName" [(ngModel)]="newUser.lastName" name="lastName" required>
+          
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>    
+        </form>
+      </div>
+    </ng-template>
+
+    <ng-template #addressModal let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Change Address</h4>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addressForm="ngForm" (ngSubmit)="changeAddress()">
+          <div class="form-group">
+            <label for="country">Enter new country:</label>
+            <input type="text" class="form-control" id="country" [(ngModel)]="newUser.address.country" name="country" required>
+            <label for="city">Enter new city:</label>
+            <input type="text" class="form-control" id="city" [(ngModel)]="newUser.address.city" name="city" required>
+            <label for="street">Enter new street:</label>
+            <input type="text" class="form-control" id="street" [(ngModel)]="newUser.address.street" name="street" required>
+            <label for="city">Enter new number:</label>
+            <input type="number" class="form-control" id="number" [(ngModel)]="newUser.address.number" name="number" required>
+          
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>    
+        </form>
+      </div>
+    </ng-template>
+
+    <ng-template #passwordModal let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Change Password</h4>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registrationForm" #addressForm="ngForm" (ngSubmit)="changePassword()">
+          <div class="form-group">
+            
+            <label for="password">Password</label>            
+          <input id="password" formControlName="password" [(ngModel)]="registration.password" type="password" />
+          <div *ngIf="password?.invalid && password?.touched" class="error">Password is required</div>
+         
+          <br>
+          <label for="confirmPassword">Confirm Password</label>
+          <input id="confirmPassword" formControlName="confirmPassword" type="password" />
+          <div *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="error">
+            Confirm Password is required and must match Password
+          </div>
+          </div>
+          <button type="submit" [disabled]="registrationForm.invalid" class="btn btn-primary">Save</button>    
+        </form>
+      </div>
+    </ng-template>
+    
   </div>
-  
+  <div>
+      <app-my-posts></app-my-posts>
+    </div>

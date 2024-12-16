@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Post } from './post.model';
 import { Comment } from './comment.model';
+import { environment } from 'src/env/environment';
+import { PostDTO } from './postDTO.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +17,12 @@ export class PostService {
   getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.apiUrl)
   }
+  getPostsDTO(): Observable<PostDTO[]> {
+    return this.http.get<PostDTO[]>(this.apiUrl)
+  }
 
-  likePost(id: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${id}/like`, {});
+  likePost(id: number, userId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${id}/${userId}/like`, {});
   }
 
   addComment(postId: number, comment: Comment): Observable<Comment> {

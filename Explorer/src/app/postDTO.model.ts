@@ -1,7 +1,7 @@
 import { Comment } from './comment.model';
 import { DateArray } from './like.model';
 
-export class Post {
+export class PostDTO {
   id: number;
   title: string;  // Naslov posta
   description: string;  // Sadržaj posta
@@ -14,7 +14,7 @@ export class Post {
   userId: number;  // ID korisnika koji je kreirao post
   longitude: number;
   latitude: number;
-  dateOfCreation: Date;
+  dateOfCreation: DateArray;
   imageBase64: string;
 
   constructor() {

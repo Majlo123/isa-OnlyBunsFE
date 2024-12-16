@@ -13,7 +13,8 @@
         <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button [routerLink]="['/chats']" routerLinkActive="active">Chats</button>  
         <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['/maps']" routerLinkActive="active">Map Posts</button>  
         <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button [routerLink]="['/post-create']" routerLinkActive="active">Add Post</button>
-        <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button [routerLink]="['/user-profile', user.id]" routerLinkActive="active">My Account</button>  
+        <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button [routerLink]="['/user-profile', user.id]" routerLinkActive="active">My Account</button>
+        <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button [routerLink]="['/trends']" routerLinkActive="active">Trends</button>  
       </div>
   </div>
 </mat-toolbar>

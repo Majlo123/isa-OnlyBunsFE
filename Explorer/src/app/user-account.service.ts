@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UserInfo } from './infrastructure/auth/model/userInfo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,9 @@ export class UserAccountService {
   }
   searchByEmail(email: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/search/email`, { params: { email } });
+  }
+  getUserInfo(email: string): Observable<UserInfo> {
+    return this.http.get<UserInfo>(`${this.apiUrl}/getUserInfo`, { params: { email } });
   }
   getUsernameById(userId: number): Observable<string> {
     return this.http.get(`${this.apiUrl}/${userId}/username`, { responseType: 'text' });

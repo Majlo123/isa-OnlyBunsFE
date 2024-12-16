@@ -12,6 +12,8 @@ import { AuthGuard } from './infrastructure/auth/auth.guard';
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
 import { MyPostsComponent } from './my-posts/my-posts.component';
+import { ProfileComponent } from './user-profile/user-profile.component';
+import { TrendsComponent } from './trends/trends.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { MyPostsComponent } from './my-posts/my-posts.component';
     PostListComponent,
     PostCreateComponent,
     UserAccountComponent,
-    MyPostsComponent
+    MyPostsComponent,
+    ProfileComponent,
+    TrendsComponent
   ],
   imports: [
     BrowserModule,

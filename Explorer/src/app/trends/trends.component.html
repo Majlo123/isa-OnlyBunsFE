@@ -1,0 +1,84 @@
+<body>
+    <div class="container my-4">
+        <!-- Top Stats Section -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="stat-card">
+                    <div class="stat-number">{{totalPostsCount}}</div>
+                    <div class="stat-text">Total Posts</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="stat-card">
+                    <div class="stat-number">{{totalPostsCountInMonth}}</div>
+                    <div class="stat-text">Number of Posts in Last Month</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Most Popular Posts in Last Month -->
+        <div class="posts-section">
+            <h3 class="app-title">Top 5 Most Popular Posts in Last Week</h3>
+            <div class="row">            
+                <div class="col-md-4 col-lg-3" *ngFor="let post of fiveMostPopularPosts">
+                    <div class="post-header">
+                        <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture" />
+                        <h3 class="username">
+                          <a *ngIf="post.userId !== 0" [routerLink]="['/user-profile',post.userId]">{{ getUsernameById(post.userId) | async }}</a>
+                        </h3>
+                    </div>
+                    <div class="post-card">
+                        <!-- Fixed property binding for the image src -->
+                        <img [src]="post.imageUrl" alt="Post Image" *ngIf="post.imageUrl" />
+                        <div class="post-content">
+                            <h4>{{ post.title }}</h4>
+                            <p>{{ post.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Most Popular Posts of All Time -->
+        <div class="posts-section">
+            <h3 class="app-title">Top 10 Most Popular Posts of All Time</h3>
+            <div class="row">
+                <div class="col-md-4 col-lg-3" *ngFor="let post of tenMostPopularPosts">
+                    <div class="post-header">
+                        <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture" />
+                        <h3 class="username">
+                          <a *ngIf="post.userId !== 0" [routerLink]="['/user-profile',post.userId]">{{ getUsernameById(post.userId) | async }}</a>
+                        </h3>
+                    </div>
+                    <div class="post-card">
+                        <img src="post.imageUrl" alt="Post Image" *ngIf="post.imageUrl" />
+                        <div class="post-actions">
+                            <button (click)="likePost(post)" [disabled]="post.likedByCurrentUser">
+                              <img [ngClass]="{'liked': post.likedByCurrentUser}" src="assets/images/like.jpg" alt="Like" class="action-icon" />
+                            </button>
+                            <span [ngClass]="{'liked': post.likedByCurrentUser}" class="like-count">{{ post.likes }} likes</span>
+                          </div>
+
+                        <div class="post-content">
+                            <h4>{{post.title}}</h4>
+                            <p>{{post.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div *ngFor="let user of usersToShow" class="post-header">
+                <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture" />
+                <h3 class="username">
+                  <a>{{ user.firstName }}</a>
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    ></script>
+</body>
