@@ -17,7 +17,9 @@ export class JwtInterceptor implements HttpInterceptor {
     || request.url.includes('/changeUserInfo') || request.url.includes('/changeUserInfo/address')
     || request.url.includes('/changeUserInfo/password') || request.url.includes('/api/likes')
     || request.url.match(new RegExp('/userAccount/\\d+/follow/\\d+')) || request.url.match(new RegExp('/userAccount/\\d+/follows/\\d+'))
-    || request.url.match(new RegExp('/userAccount/\\d+/unfollow/\\d+'))) {
+    || request.url.match(new RegExp('/userAccount/\\d+/unfollow/\\d+'))
+    || request.url.match(new RegExp('/userAccount\\?page=\\d+&size=\\d+'))
+    || request.url.includes('/userAccount/getAllUsers')) {
       return next.handle(request);
     }
     const accessTokenRequest = request.clone({

@@ -6,16 +6,16 @@
     <div class="profile-card">
       <img class="profile-picture" [src]="'assets/images/profile-picture.jpg'" alt="Profile Picture" />
   
-      <p class="user-name">{{ user.firstName }} <button (click)="openFirstNameModal()" class="btn btn-link"><i class="bi bi-pencil"></i></button></p>
+      <p class="user-name">{{ user.firstName }} <button *ngIf="this.showEdit" (click)="openFirstNameModal()" class="btn btn-link"><i class="bi bi-pencil"></i></button></p>
       <p class="user-bio">{{ user.lastName }}</p>
       <p class="user-location">{{ user.address.country }}, {{ user.address.city }}, {{user.address.street}}, {{user.address.number}}
-        <button (click)="openAddressModal()" class="btn btn-link"><i class="bi bi-pencil"></i></button>
+        <button *ngIf="this.showEdit" (click)="openAddressModal()" class="btn btn-link"><i class="bi bi-pencil"></i></button>
       </p>
       <p class="user-email">{{ user.email }}</p>
       <p class="user-email">Followers: {{ user.followersCount }}</p>
       <div style="display: flex; align-items: center; gap: 8px;">
-      <p>Change password</p>
-      <button (click)="openPasswordModal()" class="btn btn-link">
+      <p *ngIf="this.showEdit">Change password</p>
+      <button *ngIf="this.showEdit" (click)="openPasswordModal()" class="btn btn-link">
          <i class="bi bi-pencil"></i>
         
     </button>
@@ -102,5 +102,27 @@
     
   </div>
   <div>
-      <app-my-posts></app-my-posts>
+    <app-my-posts [userId]="this.userId"></app-my-posts>
     </div>
+    <div class="container my-4">
+      <h1 class="app-title">Followers</h1>
+      <div>
+      <div *ngFor="let user of allFollowers" class="post-header">
+          <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture2" />
+          <h3 class="username">
+            <a [routerLink]="['/user-profile',user.id]">{{ user.firstName }}</a>
+          </h3>
+      </div>
+      </div>
+  </div>
+  <div class="container my-4">
+    <h1 class="app-title">Following</h1>
+    <div>
+    <div *ngFor="let user of allFollowing" class="post-header">
+        <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture2" />
+        <h3 class="username">
+          <a [routerLink]="['/user-profile',user.id]">{{ user.firstName }}</a>
+        </h3>
+    </div>
+    </div>
+</div>

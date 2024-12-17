@@ -1,11 +1,12 @@
 // my-posts.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PostService } from '../post.service';
 import { UserAccountService } from '../user-account.service'; // Dodajemo UserService
 import { Post } from '../post.model';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-my-posts',
@@ -17,15 +18,29 @@ export class MyPostsComponent implements OnInit {
   editingPostId: number | null = null;
   editedContent: string = '';
   currentUserId: number = 1;
+  showMyPosts: boolean = true
+  showPosts: boolean = false
   usernamesCache: Map<number, BehaviorSubject<string | undefined>> = new Map();
-
+  @Input() userId: number | null = 0;
   constructor(
     private postService: PostService,
     private authService: AuthService,
-    private userService: UserAccountService // Dodajemo UserService kao dependency
+    private userService: UserAccountService, // Dodajemo UserService kao dependency
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    
+    this.route.params.subscribe(() => {
+      this.showMyPosts = true
+      this.showPosts = false
+      this.userId = Number(this.route.snapshot.paramMap.get('userId'));
+      console.log("Current userId: " + this.userId)
+    if(this.userId !== this.authService.user$.value.id){
+      this.showPosts = true
+      this.showMyPosts = false
+      this.loadUserPosts(this.userId)
+    }else{
     this.authService.user$.subscribe(user => {
       if (user && user.id && user.id !== 0) { // Provera da li ID postoji i nije 0
         this.loadUserPosts(user.id);
@@ -33,6 +48,9 @@ export class MyPostsComponent implements OnInit {
         console.error('User ID not found. Make sure user is logged in.');
       }
     });
+  }
+    })
+    
   }
 
 

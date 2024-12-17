@@ -10,6 +10,7 @@ import { UserInfoService } from './userInfoService';
 import { Registration } from '../infrastructure/auth/model/registration.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserAccountService } from '../user-account.service';
+import { UserInfoId } from '../infrastructure/auth/model/userInfoId.model';
 
 @Component({
   selector: 'user-profile',
@@ -19,6 +20,10 @@ import { UserAccountService } from '../user-account.service';
 export class ProfileComponent implements OnInit {
     email: string;
     isFollowingUser: boolean = false; // Da li je korisnik već zapraćen
+    allFollowers: UserInfoId[] = []
+    allFollowing: UserInfoId[] = []
+    allUsers: UserInfoId[] = []
+    showEdit: boolean = true
   isOwnProfile: boolean = false; // Da li korisnik gleda svoj profil
   followAttempts: number = 0; // Brojač zapraćivanja u jednom minutu
   followStartTime: number = Date.now(); // Početno vreme praćenja
@@ -81,18 +86,59 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userId = Number(this.route.snapshot.paramMap.get('userId'));
-    const currentUserId = this.authService.getCurrentUserId();
+    this.route.params.subscribe(() => {
+      this.allUsers = []
+      this.allFollowers = []
+      this.allFollowing = []
+      this.showEdit = true
+      this.userId = Number(this.route.snapshot.paramMap.get('userId'));
+      
+      const currentUserId = this.authService.getCurrentUserId();
+      if(currentUserId === this.userId){
+        this.showEdit = true
+      } else{
+        this.showEdit = false
+      }
+      // Proveravamo da li korisnik gleda svoj profil
+      this.isOwnProfile = this.userId === currentUserId;
 
-    // Proveravamo da li korisnik gleda svoj profil
-    this.isOwnProfile = this.userId === currentUserId;
+      if (!this.isOwnProfile) {
+        this.checkFollowingStatus(); // Proverava status praćenja samo ako nije sopstveni profil
+      }
+      this.getUser();
+      this.getFollowers();
 
-    if (!this.isOwnProfile) {
-      this.checkFollowingStatus(); // Proverava status praćenja samo ako nije sopstveni profil
-    }
-    this.getUser();
+    })
+    
   }
 
+  getFollowing(): void {
+
+  }
+  getFollowers(): void {
+    this.userAccountService.getAllAccounts().subscribe(
+      (data: UserInfoId []) => {
+        this.allUsers = data
+        console.log(data)
+        data.forEach(user => {
+          if(this.userId){
+          this.userAccountService.isFollowing(user.id, this.userId).subscribe(
+        (follows: boolean) => {
+          if(follows){
+            this.allFollowers.push(user)
+          }
+        })
+        this.userAccountService.isFollowing(this.userId, user.id).subscribe(
+          (follows: boolean) => {
+            if(follows){
+              this.allFollowing.push(user)
+            }
+          })
+        }});
+        
+      }
+    )
+  }
   getUser(): void {
     if (this.userId !== null) {
       this.authService.getEmailByUserId(this.userId).subscribe(
