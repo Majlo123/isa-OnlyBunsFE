@@ -17,7 +17,8 @@ import { MyPostsComponent } from './my-posts/my-posts.component';
 import { TrendsComponent } from './trends/trends.component';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import this
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AnalyticsComponent } from './analytics/analytics.component'; // Import this
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
     UserAccountComponent,
     MyPostsComponent,
     ProfileComponent,
-    TrendsComponent
+    TrendsComponent,
+    AnalyticsComponent
   ],
   imports: [
     BrowserModule,
