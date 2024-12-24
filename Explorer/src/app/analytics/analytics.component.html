@@ -1,26 +1,40 @@
-<div>
+<div class="container">
   <h2>Analytics Dashboard</h2>
 
-  <div>
+  <!-- Izbor vremenskog perioda -->
+  <div class="section">
+    <label for="timePeriod">Select Time Period:</label>
+    <select id="timePeriod" [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
+      <option value="weekly">Weekly</option>
+      <option value="monthly">Monthly</option>
+      <option value="yearly">Yearly</option>
+    </select>
+  </div>
+
+  <!-- Statistika -->
+  <div class="section">
     <h3>Statistics</h3>
     <p>Posts: {{ postCount }}</p>
     <p>Comments: {{ commentCount }}</p>
   </div>
 
-  <div>
+  <!-- Korisnici -->
+  <div class="section">
     <h3>Users</h3>
     <p>Total Users: {{ totalUsers }}</p>
     <p>Users with Posts: {{ usersWithPosts }}</p>
     <p>Users with Comments: {{ usersWithComments }}</p>
-    <p>Inactive Users: {{ inactiveUsers }}</p>
   </div>
 
-  <div>
+  <!-- Distribucija aktivnosti -->
+  <div class="section chart-container">
     <h3>Activity Distribution</h3>
     <canvas baseChart
             [data]="pieChartData"
             [options]="pieChartOptions"
+            [labels]="pieChartLabels"
             chartType="pie">
     </canvas>
   </div>
+
 </div>
