@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+/* Sekcije */
+.section {
+  margin: 15px 0;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 400px; /* Postavite manju maksimalnu širinu */
+  height: 400px; /* Fiksna visina */
+  margin: 20px auto;
+  position: relative;
+}
+
+canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+
+/* Tooltip za grafikon */
+.chart-tooltip {
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Dropdown stil */
+select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}

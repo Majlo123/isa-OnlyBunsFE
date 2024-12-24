@@ -13,11 +13,13 @@ import { AuthGuard } from './infrastructure/auth/auth.guard';
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
 import { MyPostsComponent } from './my-posts/my-posts.component';
-
+import { NgChartsModule } from 'ng2-charts';
 import { TrendsComponent } from './trends/trends.component';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import this
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AnalyticsComponent } from './analytics/analytics.component';
+import { AllPostsComponent } from './all-posts/all-posts.component'; // Import this
 
 @NgModule({
   declarations: [
@@ -27,12 +29,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
     UserAccountComponent,
     MyPostsComponent,
     ProfileComponent,
-    TrendsComponent
+    TrendsComponent,
+    AnalyticsComponent,
+    AllPostsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AuthModule,
+    NgChartsModule,
     ReactiveFormsModule, // Dodaj ako koristiš reaktivne forme
     HttpClientModule,
     LayoutModule,

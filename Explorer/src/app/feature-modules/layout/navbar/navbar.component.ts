@@ -14,13 +14,15 @@ export class NavbarComponent implements OnInit {
   cartItemCount: number = 0;
   showDropdown: string | null = null;
 
+  // Metoda za otvaranje/zatvaranje dropdown menija
   toggleDropdown(menu: string) {
     this.showDropdown = this.showDropdown === menu ? null : menu;
-}
+  }
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
+    // Pretplata na korisnika
     this.authService.user$.subscribe(user => {
       this.user = user;
       console.log("USERRR " + this.user.role)
@@ -29,5 +31,13 @@ export class NavbarComponent implements OnInit {
 
   onLogout(): void {
     this.authService.logout();
+  }
+
+  // Proveri da li je korisnik administrator
+  isAdmin(): boolean {
+    return this.user?.role?.trim().toLowerCase() === 'administrator'; // Ignoriše razmake i veličinu slova
+  }
+  isUser(): boolean {
+    return this.user?.role?.trim().toLowerCase() !== 'administrator'; // Ignoriše razmake i veličinu slova
   }
 }
