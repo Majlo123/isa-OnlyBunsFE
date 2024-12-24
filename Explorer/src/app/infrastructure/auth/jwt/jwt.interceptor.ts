@@ -12,14 +12,21 @@ export class JwtInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (request.url.includes('/userAccount/login') || request.url.includes('/userAccount/register') || 
-    request.url.includes('/api/posts') || request.url.includes('/userAccount/getUserInfo') || 
+    //request.url.includes('/api/posts') 
+    //request.url.includes('/userAccount/getUserInfo') || 
     request.url.match(new RegExp('/userAccount/\\d+/username')) || request.url.match(new RegExp('/userAccount/\\d+/email'))
-    || request.url.includes('/changeUserInfo') || request.url.includes('/changeUserInfo/address')
-    || request.url.includes('/changeUserInfo/password') || request.url.includes('/api/likes')
-    || request.url.match(new RegExp('/userAccount/\\d+/follow/\\d+')) || request.url.match(new RegExp('/userAccount/\\d+/follows/\\d+'))
-    || request.url.match(new RegExp('/userAccount/\\d+/unfollow/\\d+'))) {
+    //|| request.url.includes('/changeUserInfo') 
+    //|| request.url.includes('/changeUserInfo/address')
+    //|| request.url.includes('/changeUserInfo/password') 
+    || request.url.includes('/api/likes')
+    //|| request.url.match(new RegExp('/userAccount/\\d+/follow/\\d+')) 
+    || request.url.match(new RegExp('/userAccount/\\d+/follows/\\d+'))
+    //|| request.url.match(new RegExp('/userAccount/\\d+/unfollow/\\d+'))
+    //|| request.url.match(new RegExp('/userAccount\\?page=\\d+&size=\\d+'))
+    || request.url.includes('/userAccount/getAllUsers')) {
       return next.handle(request);
     }
+    console.log("Token: " + localStorage.getItem(ACCESS_TOKEN))
     const accessTokenRequest = request.clone({
       setHeaders: {
         Authorization: `Bearer ` + localStorage.getItem(ACCESS_TOKEN),

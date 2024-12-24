@@ -14,6 +14,9 @@ export class UserAccountService {
   getAllUsers(page: number, size: number): Observable<any> {
     return this.http.get(`${this.apiUrl}?page=${page}&size=${size}`);
   }
+  getAllAccounts(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/getAllUsers`);
+  }
   searchByFirstName(firstName: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/search/firstName`, { params: { firstName } });
   }

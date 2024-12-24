@@ -6,6 +6,7 @@
         <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['/login']" routerLinkActive="active">Login</button>
         <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button (click)="onLogout()">Logout</button>
 
+
         <button *ngIf="isUser() &&user" color="accent" mat-raised-button [routerLink]="['/posts']" routerLinkActive="active">Posts</button>
         <button *ngIf="isAdmin() &&user" color="accent" mat-raised-button [routerLink]="['/all-posts']" routerLinkActive="active">All Posts</button>
         <button *ngIf="isUser() &&user" color="accent" mat-raised-button [routerLink]="['/my-posts']" routerLinkActive="active">My posts</button>

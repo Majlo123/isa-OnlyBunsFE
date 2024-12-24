@@ -25,10 +25,7 @@ export class NavbarComponent implements OnInit {
     // Pretplata na korisnika
     this.authService.user$.subscribe(user => {
       this.user = user;
-
-      // Provera korisničkih podataka u konzoli
-      console.log('User object:', this.user);
-      console.log('User role:', this.user.role);
+      console.log("USERRR " + this.user.role)
     });
   }
 

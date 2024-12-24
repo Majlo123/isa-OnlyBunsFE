@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'user-account', component: UserAccountComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostListComponent },
-  { path: 'my-posts', component: MyPostsComponent, canActivate: [AuthGuard] },// Ruta za PostListComponent
+  { path: 'my-posts/:userId', component: MyPostsComponent, canActivate: [AuthGuard] },// Ruta za PostListComponent
   { path: 'post-create', component: PostCreateComponent},
   { path: 'user-profile/:userId', component: ProfileComponent },
   { path: 'trends', component: TrendsComponent },
