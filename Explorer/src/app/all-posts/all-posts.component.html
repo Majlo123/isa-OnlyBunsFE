@@ -14,6 +14,7 @@
       <img [ngClass]="{'liked': post.likedByCurrentUser}" src="assets/images/like.jpg" alt="Like" class="action-icon" />
     </button>
     <span [ngClass]="{'liked': post.likedByCurrentUser}" class="like-count">{{ post.likes }} likes</span>
+    <button (click)="markAdvertisable(post)">Mark Advertisable</button>
   </div>
 
 
