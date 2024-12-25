@@ -48,4 +48,7 @@ export class PostService {
     return this.http.get<Post[]>(`http://localhost:8080/api/posts/following/${userId}`);
   }
 
+  markAdvertisable(postId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/advertisable/${postId}`,{});
+  }
 }
