@@ -1,0 +1,221 @@
+/*******************************
+ * BASIC LAYOUT
+ *******************************/
+ .chat-dm-container {
+  display: flex;
+  height: 90vh; /* desired height */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: "Helvetica", sans-serif;
+}
+
+/* Left and right panels */
+.left-panel,
+.right-panel {
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/*******************************
+ * LEFT PANEL (Users, create chat)
+ *******************************/
+.left-panel {
+  width: 40%;
+  background-color: #fafafa;
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-title {
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+.users-table th {
+  text-align: left;
+  font-weight: 600;
+  background-color: #f3f3f3;
+  padding: 8px;
+}
+.users-table td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Section for creating a new chat */
+.create-chat-section {
+  margin-top: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 8px;
+}
+.create-chat-section h4 {
+  margin-top: 0;
+}
+.create-chat-section label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.create-chat-section input {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.create-chat-section button {
+  background-color: #3897f0;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.create-chat-section button:hover {
+  background-color: #2b82d9;
+}
+
+/*******************************
+ * RIGHT PANEL (Chat list + messages)
+ *******************************/
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+/* Chat list */
+.chat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  max-height: 200px;
+  overflow-y: auto; /* if many chats */
+  border-bottom: 1px solid #ccc;
+}
+.chat-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f3f3;
+}
+.chat-list li:hover {
+  background-color: #fafafa;
+}
+.chat-list .selected {
+  background-color: #ddd;
+}
+.group-tag {
+  font-size: 0.9rem;
+  color: #999;
+  margin-left: 8px;
+}
+
+/* Selected chat details */
+.chat-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.chat-title {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 8px;
+}
+
+.add-users-section {
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  background-color: #f7f7f7;
+}
+.add-users-section h4 {
+  margin-top: 0;
+}
+.to-add-table {
+  margin-top: 8px;
+}
+.to-add-table th {
+  background-color: #eee;
+}
+
+/* Messages */
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 8px;
+  background-color: #fafafa;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.message-item {
+  margin-bottom: 6px;
+  padding: 6px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+.message-item strong {
+  color: #333;
+  margin-right: 4px;
+}
+.timestamp {
+  color: #999;
+  margin-left: 6px;
+  font-size: 0.85rem;
+}
+
+/* Input for new message */
+.message-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+  padding-top: 8px;
+}
+.message-input input {
+  flex: 1;
+  padding: 8px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+.message-input button {
+  background-color: #3897f0;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.message-input button:hover {
+  background-color: #2b82d9;
+}
+
+/* "Load older messages" button */
+.older-btn {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+.older-btn:hover {
+  background-color: #f2f2f2;
+}

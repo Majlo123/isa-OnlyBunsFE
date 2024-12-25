@@ -19,7 +19,8 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnalyticsComponent } from './analytics/analytics.component';
-import { AllPostsComponent } from './all-posts/all-posts.component'; // Import this
+import { AllPostsComponent } from './all-posts/all-posts.component';
+import { ChatComponent } from './chat/chat.component'; // Import this
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AllPostsComponent } from './all-posts/all-posts.component'; // Import t
     ProfileComponent,
     TrendsComponent,
     AnalyticsComponent,
-    AllPostsComponent
+    AllPostsComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,

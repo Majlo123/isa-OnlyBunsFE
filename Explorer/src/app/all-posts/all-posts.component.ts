@@ -95,4 +95,16 @@ export class AllPostsComponent implements OnInit {
     }
     return this.usernamesCache.get(userId)!.asObservable();
   }
+
+  markAdvertisable(post: Post): void {
+    this.postService.markAdvertisable(post.id).subscribe({
+      next: () => {
+        alert("You have successfully marked post as advertisable!");
+      },
+      error: (error) => {
+        console.log(error)
+      
+      }
+      })
+  }
 }
