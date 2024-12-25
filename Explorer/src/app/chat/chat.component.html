@@ -1,0 +1,109 @@
+<div class="chat-dm-container">
+  <!-- LEFT PANEL: User list + create new chat -->
+  <div class="left-panel">
+    <h3 class="panel-title">Users</h3>
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userList">
+          <td>
+            <input
+              type="checkbox"
+              [checked]="selectedUserIds.includes(user.id)"
+              (change)="toggleUserSelection(user.id)"
+            />
+            {{ user.email }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="create-chat-section">
+      <h4>Create new chat</h4>
+      <label>Chat name:</label>
+      <input [(ngModel)]="newChatName" placeholder="Enter name..." />
+      <p>({{ selectedUserIds.length }} selected)</p>
+      <button (click)="createNewChat()">Create Chat</button>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL: Chat list + selected chat messages -->
+  <div class="right-panel">
+    <h3 class="panel-title">My Chats</h3>
+    <ul class="chat-list">
+      <li
+        *ngFor="let c of chats"
+        (click)="openChat(c)"
+        [class.selected]="c === selectedChat"
+      >
+        {{ c.name }}
+        <span *ngIf="c.group" class="group-tag">[Group]</span>
+      </li>
+    </ul>
+
+    <div class="chat-details" *ngIf="selectedChat">
+      <h3 class="chat-title">Chat: {{ selectedChat.name }}</h3>
+      <p>Participants: {{ selectedChat.participants }}</p>
+
+      <!-- If it's a group chat and I'm the admin, show add-user section -->
+      <div
+        class="add-users-section"
+        *ngIf="selectedChat.group && selectedChat.adminId === currentUserId"
+      >
+        <h4>Add users to this group</h4>
+        <p *ngIf="userListForAdding.length === 0">
+          (No users to add or they are already in the group)
+        </p>
+        <table class="users-table to-add-table" *ngIf="userListForAdding.length">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of userListForAdding">
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="selectedUserIdsToAdd.includes(u.id)"
+                  (change)="toggleUserSelectionForAdd(u.id)"
+                />
+              </td>
+              <td>{{ u.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button (click)="addSelectedUsersToGroup()">
+          Add selected users
+        </button>
+      </div>
+
+      <!-- Button to load older messages -->
+      <button (click)="loadOlderMessages()" class="older-btn">
+        Load older messages
+      </button>
+
+      <div class="messages-container" id="messages-container">
+        <div class="message-item" *ngFor="let m of messages">
+          <strong>{{ getSenderUsername(m.senderId) | async }}:</strong>
+          {{ m.content }}
+          <span class="timestamp">({{ m.timestamp }})</span>
+        </div>
+      </div>
+
+      <div class="message-input">
+        <input
+          type="text"
+          [(ngModel)]="newMessageContent"
+          placeholder="Type a message..."
+        />
+        <button (click)="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import { PostCreateComponent } from 'src/app/post-create/post-create.component';
 import { TrendsComponent } from 'src/app/trends/trends.component';
 import { AnalyticsComponent } from 'src/app/analytics/analytics.component';
 import { AllPostsComponent } from 'src/app/all-posts/all-posts.component';
+import { ChatComponent } from 'src/app/chat/chat.component';
 const routes: Routes = [
   { path: '', redirectTo: '/posts', pathMatch: 'full' }, // PostListComponent kao početna stranica
   { path: 'home', component: HomeComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'trends', component: TrendsComponent },
   { path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
   { path: 'all-posts', component: AllPostsComponent},
+  { path: 'chats', component: ChatComponent},
   { path: '**', redirectTo: '/trends' }, // Preusmerenje za nepostojeće rute
 ];
 
