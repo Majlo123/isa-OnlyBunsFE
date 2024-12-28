@@ -35,9 +35,9 @@ export class NavbarComponent implements OnInit {
 
   // Proveri da li je korisnik administrator
   isAdmin(): boolean {
-    return this.user?.role?.trim().toLowerCase() === 'administrator'; // Ignoriše razmake i veličinu slova
+    return this.user?.role?.trim().toLowerCase() === 'administrator' && this.user.username != ''; // Ignoriše razmake i veličinu slova
   }
   isUser(): boolean {
-    return this.user?.role?.trim().toLowerCase() !== 'administrator'; // Ignoriše razmake i veličinu slova
+    return this.user?.role?.trim().toLowerCase() !== 'administrator' && this.user?.username != ''; // Ignoriše razmake i veličinu slova
   }
 }
