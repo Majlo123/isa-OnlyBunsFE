@@ -31,7 +31,7 @@ class UsernameCache {
 })
 export class ChatComponent implements OnInit {
 
-  currentUserId: number | null = null;
+  currentUserId: number = 0;
   chats: Chat[] = [];
   selectedChat: Chat | null = null;
 
@@ -52,7 +52,7 @@ export class ChatComponent implements OnInit {
 
   // Paginacija poruka
   currentPage = 0;   // page=0 -> najnovijih 10, page=1 -> starijih 10, ...
-  pageSize = 10;
+  pageSize = 10000000;
 
   usernameCache: UsernameCache;
 
@@ -68,14 +68,24 @@ export class ChatComponent implements OnInit {
     const user = this.authService.user$.value;
     if (user && user.id) {
       this.currentUserId = user.id;
+      this.chatService.initializeWebSocketConnection(); // inicijalizuj konekciju
       this.loadChats();
     } else {
       console.error('User not logged in or user.id not found');
     }
 
-    // Učitavamo sve korisnike (za kreiranje chata / dodavanje u grupu)
+    // Učitaj sve korisnike
     this.loadAllUsers();
   }
+  waitForConnection(callback: () => void, interval = 100): void {
+    if (this.chatService.isConnected()) {
+      callback();
+    } else {
+      console.log('Waiting for WebSocket connection...');
+      setTimeout(() => this.waitForConnection(callback, interval), interval);
+    }
+  }
+
 
   // ==================== CHATS ====================
   loadChats(): void {
@@ -90,17 +100,30 @@ export class ChatComponent implements OnInit {
 
   openChat(chat: Chat): void {
     this.selectedChat = chat;
-    // resetujemo messages
     this.messages = [];
-    // resetujemo paginaciju na 0 (najnovije)
     this.currentPage = 0;
 
-    // Učitamo "najnovije" poruke (page=0)
+    // Učitaj poruke
     this.loadMessages();
 
-    // Ako je grupni i sam admin, pripremimo listu za dodavanje
+    // Proveri da li je WebSocket konekcija uspostavljena
+    const waitForConnection = () => {
+      if (this.chatService.isConnected()) {
+        // Pretplati se na WebSocket poruke
+        this.chatService.subscribeToChat(chat.id, (message) => {
+          this.messages.push(message);
+          this.scrollToBottom();
+        });
+      } else {
+        console.warn('Waiting for WebSocket connection...');
+        setTimeout(waitForConnection, 500); // Proveri opet za 500ms
+      }
+    };
+
+    waitForConnection();
+
+    // Ako je grupni i ja sam admin, pripremi listu za dodavanje korisnika
     if (chat.group && chat.adminId === this.currentUserId) {
-      // Niko ko je već u participants, ne treba da bude na listi
       this.userListForAdding = this.userList.filter(
         (u) => !chat.participants.includes(u.id) && u.id !== this.currentUserId
       );
@@ -111,6 +134,7 @@ export class ChatComponent implements OnInit {
     }
   }
 
+
   // ==================== PAGINIRANE PORUKE ====================
   loadMessages(): void {
     if (!this.selectedChat) return;
@@ -120,30 +144,12 @@ export class ChatComponent implements OnInit {
       this.pageSize
     ).subscribe({
       next: (msgs) => {
-        // Ako je page=0, pretpostavimo da dobijamo "najnovijih" 10
-        // Ako je page=1, dobijamo sledećih starijih 10, itd.
-
-        // Treba da znamo redosled: recimo, ako server šalje starije prva, pa novije kasnije,
-        // treba da ubacimo ispred (unshift). Ako šalje novije prvo, treba prilagoditi.
-        // Dogovori se s backend-om.
-
-        // Primer: ako je page=0 = najnovije, backend neka šalje [najnovija, ... starija].
-        // Mi želimo da prikažemo od starije prema novijoj, ili obrnuto.
-        // Da pojednostavimo:
-        // pretpostavimo da je stizalo od starije do novije ->
-        // pa ako je page=0 = najnovije, moraćemo "obrnuti" listu i unshift.
-
-        // recimo:
         if (this.currentPage === 0) {
-          // Ako je prva stranica -> postavljamo messages
           this.messages = msgs;
         } else {
-          // Inače, dodajemo starije gore (na početak)
-          // -> npr. unshift ako array već ima novije
           this.messages = [...msgs, ...this.messages];
         }
 
-        // Scroll do dna samo ako je page=0 (da vidimo najnovije)
         if (this.currentPage === 0) {
           setTimeout(() => this.scrollToBottom(), 0);
         }
@@ -153,7 +159,6 @@ export class ChatComponent implements OnInit {
   }
 
   loadOlderMessages(): void {
-    // Samo page++ i loadMessages ponovo
     if (!this.selectedChat) return;
     this.currentPage++;
     this.loadMessages();
@@ -168,7 +173,11 @@ export class ChatComponent implements OnInit {
 
   // ==================== SLANJE PORUKE ====================
   sendMessage(): void {
-    if (!this.selectedChat || !this.currentUserId) return;
+    if (!this.selectedChat || !this.currentUserId || !this.newMessageContent.trim()) {
+      console.error('Chat or user ID is missing or message is empty!');
+      return;
+    }
+
     const msg: Message = {
       id: 0,
       senderId: this.currentUserId,
@@ -176,14 +185,16 @@ export class ChatComponent implements OnInit {
       timestamp: '',
       chat: this.selectedChat
     };
-    this.chatService.sendMessage(msg).subscribe({
-      next: (created) => {
-        // Ubacimo ga na kraj (ako pretpostavimo da su messages starije->novije)
-        this.messages.push(created);
-        this.newMessageContent = '';
-        setTimeout(() => this.scrollToBottom(), 0);
-      },
-      error: (err) => console.error('Error sending message:', err),
+
+    // Sačekaj povezivanje pre slanja
+    this.waitForConnection(() => {
+      this.chatService.sendMessage(
+        this.selectedChat!.id,
+        this.currentUserId!,
+        this.newMessageContent.trim()
+      );
+      this.newMessageContent = '';
+      console.log('Message sent!');
     });
   }
 
@@ -215,24 +226,18 @@ export class ChatComponent implements OnInit {
       this.chatService.addUserToGroup(this.selectedChat.id, uId).subscribe({
         next: (updatedChat) => {
           this.selectedChat = updatedChat;
-          // Sada ponovo filtriramo userListForAdding, da ne ostane u njoj
           this.userListForAdding = this.userListForAdding.filter(u => u.id !== uId);
-
-          // Možemo logovati poslednjih 10 poruka, ako želimo:
-          this.chatService.getLatestMessages(updatedChat.id).subscribe({
-            next: (last10) => {
-              console.log(`User ${uId} sada vidi ovih 10 poruka: `, last10);
-            }
-          });
         },
         error: (err) => console.error('Error adding user to group:', err)
       });
     }
     alert('Dodavanje završeno!');
 
-    // Reset
     this.selectedUserIdsToAdd = [];
   }
+
+  // ==================== KREIRANJE NOVOG CHATA ====================
+
 
   // ==================== KREIRANJE NOVOG CHATA ====================
   toggleUserSelection(userId: number): void {
@@ -266,7 +271,6 @@ export class ChatComponent implements OnInit {
       next: (created) => {
         this.chats.push(created);
         alert('Novi chat kreiran!');
-        // reset
         this.newChatName = '';
         this.selectedUserIds = [];
       },
@@ -278,14 +282,12 @@ export class ChatComponent implements OnInit {
   loadAllUsers(): void {
     this.userService.getAllUsers(0, 1000).subscribe({
       next: (resp) => {
-        // Pretpostavka: { content: UserAccount[], totalElements...}
         this.userList = resp.content;
       },
       error: (err) => console.error('Error fetching users', err),
     });
   }
 
-  // ==================== PRIKAZ USERNAME ====================
   getSenderUsername(senderId: number): Observable<string | undefined> {
     return this.usernameCache.getUsername(senderId);
   }
