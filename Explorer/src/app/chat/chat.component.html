@@ -22,6 +22,7 @@
       </tbody>
     </table>
 
+    <!-- Create New Chat Section -->
     <div class="create-chat-section">
       <h4>Create new chat</h4>
       <label>Chat name:</label>
@@ -45,11 +46,12 @@
       </li>
     </ul>
 
+    <!-- Chat Details -->
     <div class="chat-details" *ngIf="selectedChat">
       <h3 class="chat-title">Chat: {{ selectedChat.name }}</h3>
       <p>Participants: {{ selectedChat.participants }}</p>
 
-      <!-- If it's a group chat and I'm the admin, show add-user section -->
+      <!-- Add Users to Group -->
       <div
         class="add-users-section"
         *ngIf="selectedChat.group && selectedChat.adminId === currentUserId"
@@ -83,19 +85,28 @@
         </button>
       </div>
 
-      <!-- Button to load older messages -->
-      <button (click)="loadOlderMessages()" class="older-btn">
-        Load older messages
-      </button>
-
+      <!-- MESSAGES CONTAINER -->
       <div class="messages-container" id="messages-container">
-        <div class="message-item" *ngFor="let m of messages">
-          <strong>{{ getSenderUsername(m.senderId) | async }}:</strong>
-          {{ m.content }}
-          <span class="timestamp">({{ m.timestamp }})</span>
+        <div
+          class="message-item"
+          [ngClass]="{'sent': m.senderId === currentUserId, 'received': m.senderId !== currentUserId}"
+          *ngFor="let m of messages"
+        >
+          <!-- Date and Time -->
+          <div class="message-meta">
+            <span class="message-date">{{ m.timestamp | date:'EEE, d MMM yyyy' }}</span>
+            <span class="message-time">{{ m.timestamp | date:'hh:mm a' }}</span>
+          </div>
+
+          <!-- Message Content -->
+          <div class="message-text">
+            <strong>{{ getSenderUsername(m.senderId) | async }}:</strong>
+            {{ m.content }}
+          </div>
         </div>
       </div>
 
+      <!-- Input for New Messages -->
       <div class="message-input">
         <input
           type="text"
