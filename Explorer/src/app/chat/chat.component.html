@@ -49,7 +49,19 @@
     <!-- Chat Details -->
     <div class="chat-details" *ngIf="selectedChat">
       <h3 class="chat-title">Chat: {{ selectedChat.name }}</h3>
-      <p>Participants: {{ selectedChat.participants }}</p>
+
+      <!-- Participants List with Remove Option -->
+      <h4>Participants:</h4>
+      <ul>
+        <li *ngFor="let participantId of selectedChat?.participants">
+          {{ getSenderUsername(participantId) | async }}
+          <button
+            *ngIf="selectedChat?.adminId === currentUserId && participantId !== currentUserId"
+            (click)="removeUserFromGroup(participantId)">
+            Remove
+          </button>
+        </li>
+      </ul>
 
       <!-- Add Users to Group -->
       <div

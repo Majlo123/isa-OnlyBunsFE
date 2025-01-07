@@ -51,7 +51,7 @@ export class ChatComponent implements OnInit {
   selectedUserIdsToAdd: number[] = [];
 
   // Paginacija poruka
-  currentPage = 0;   // page=0 -> najnovijih 10, page=1 -> starijih 10, ...
+  currentPage = 0;
   pageSize = 10000000;
 
   usernameCache: UsernameCache;
@@ -103,24 +103,32 @@ export class ChatComponent implements OnInit {
     this.messages = [];
     this.currentPage = 0;
 
-    // Učitaj poruke
-    this.loadMessages();
+    const userId = this.currentUserId;
 
-    // Proveri da li je WebSocket konekcija uspostavljena
-    const waitForConnection = () => {
-      if (this.chatService.isConnected()) {
-        // Pretplati se na WebSocket poruke
-        this.chatService.subscribeToChat(chat.id, (message) => {
-          this.messages.push(message);
-          this.scrollToBottom();
-        });
-      } else {
-        console.warn('Waiting for WebSocket connection...');
-        setTimeout(waitForConnection, 500); // Proveri opet za 500ms
+    // Proveri da li je korisnik novi član
+    this.chatService.getRecentMessages(chat.id, userId).subscribe({
+      next: (msgs) => {
+        this.messages = msgs.reverse(); // Prikazuje od starijih ka novijima
+        this.scrollToBottom();
+
+        // Pretplata na nove poruke preko WebSocket-a
+        const waitForConnection = () => {
+          if (this.chatService.isConnected()) {
+            this.chatService.subscribeToChat(chat.id, (message) => {
+              this.messages.push(message);
+              this.scrollToBottom();
+            });
+          } else {
+            console.warn('Waiting for WebSocket connection...');
+            setTimeout(waitForConnection, 500);
+          }
+        };
+        waitForConnection();
+      },
+      error: (err) => {
+        console.error('Error loading messages for new member:', err);
       }
-    };
-
-    waitForConnection();
+    });
 
     // Ako je grupni i ja sam admin, pripremi listu za dodavanje korisnika
     if (chat.group && chat.adminId === this.currentUserId) {
@@ -132,7 +140,9 @@ export class ChatComponent implements OnInit {
       this.userListForAdding = [];
       this.selectedUserIdsToAdd = [];
     }
-  }
+}
+
+
 
 
   // ==================== PAGINIRANE PORUKE ====================
@@ -235,7 +245,24 @@ export class ChatComponent implements OnInit {
 
     this.selectedUserIdsToAdd = [];
   }
+  removeUserFromGroup(userId: number): void {
+    if (!this.selectedChat) return;
+    if (this.selectedChat.adminId !== this.currentUserId) {
+      alert('Samo admin može ukloniti korisnike!');
+      return;
+    }
 
+    const confirmRemove = confirm('Da li ste sigurni da želite da uklonite ovog korisnika?');
+    if (!confirmRemove) return;
+
+    this.chatService.removeUserFromGroup(this.selectedChat.id, userId).subscribe({
+      next: (updatedChat) => {
+        this.selectedChat = updatedChat;
+        alert('Korisnik je uspešno uklonjen!');
+      },
+      error: (err) => console.error('Error removing user from group:', err),
+    });
+  }
   // ==================== KREIRANJE NOVOG CHATA ====================
 
 
