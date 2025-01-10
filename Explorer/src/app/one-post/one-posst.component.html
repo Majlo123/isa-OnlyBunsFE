@@ -1,0 +1,34 @@
+<div class="post-container">
+    <div class="post-header">
+      <img src="assets/images/profile-picture.jpg" alt="Profile picture" class="profile-picture" />
+      <h3 class="username">
+        <a *ngIf="post.userId !== 0" [routerLink]="['/user-profile',post.userId]">{{ getUsernameById(post.userId) | async }}</a>
+      </h3>
+    </div>
+  
+    <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="Post image" class="post-image" />
+  
+    <div class="post-actions">
+      <button (click)="likePost(post)" [disabled]="post.likedByCurrentUser">
+        <img [ngClass]="{'liked': post.likedByCurrentUser}" src="assets/images/like.jpg" alt="Like" class="action-icon" />
+      </button>
+      <span [ngClass]="{'liked': post.likedByCurrentUser}" class="like-count">{{ post.likes }} likes</span>
+      
+    </div>
+  
+  
+  
+    <p class="post-content">{{ post.description }}</p>
+  
+    <h4>Comments:</h4>
+    <ul class="comment-list">
+      <li *ngFor="let comment of post.comments">
+        <strong class="comment-username">{{ getUsernameById(comment.userId) }}</strong> {{ comment.content }}
+      </li>
+    </ul>
+  
+    <input [(ngModel)]="post.newCommentContent" placeholder="Add a comment..." class="comment-input"/>
+    <button (click)="addComment(post)" class="comment-button">Post</button>
+  
+    <hr />
+  </div>

@@ -14,6 +14,8 @@ import { TrendsComponent } from 'src/app/trends/trends.component';
 import { AnalyticsComponent } from 'src/app/analytics/analytics.component';
 import { AllPostsComponent } from 'src/app/all-posts/all-posts.component';
 import { ChatComponent } from 'src/app/chat/chat.component';
+import { NearbyPostsComponent } from 'src/app/nearby-posts/nearby-posts.component';
+import { HealthCareComponent } from '../health-care/health-care.component';
 const routes: Routes = [
   { path: '', redirectTo: '/posts', pathMatch: 'full' }, // PostListComponent kao početna stranica
   { path: 'home', component: HomeComponent },
@@ -27,6 +29,8 @@ const routes: Routes = [
   { path: 'trends', component: TrendsComponent },
   { path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
   { path: 'all-posts', component: AllPostsComponent},
+  { path: 'nearby-posts', component: NearbyPostsComponent},
+  { path: 'health-care', component: HealthCareComponent},
   { path: 'chats', component: ChatComponent},
   { path: '**', redirectTo: '/trends' }, // Preusmerenje za nepostojeće rute
 ];
