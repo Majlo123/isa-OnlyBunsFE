@@ -21,6 +21,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { AllPostsComponent } from './all-posts/all-posts.component';
 import { ChatComponent } from './chat/chat.component'; // Import this
+import { MapComponent } from './map/map.component';
+import { NearbyPostsComponent } from './nearby-posts/nearby-posts.component';
+import { PopupContentComponent } from './one-post/one-post.component';
+import { HealthCareComponent } from './infrastructure/health-care/health-care.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +37,11 @@ import { ChatComponent } from './chat/chat.component'; // Import this
     TrendsComponent,
     AnalyticsComponent,
     AllPostsComponent,
-    ChatComponent
+    ChatComponent,
+    MapComponent,
+    NearbyPostsComponent,
+    HealthCareComponent,
+    PopupContentComponent
   ],
   imports: [
     BrowserModule,

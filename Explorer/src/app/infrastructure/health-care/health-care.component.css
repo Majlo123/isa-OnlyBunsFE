@@ -1,0 +1,12 @@
+.stat-text {
+    font-size: 16px;
+    color: #555;
+}
+.app-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #ff6f61;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  }
