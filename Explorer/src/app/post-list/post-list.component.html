@@ -7,7 +7,10 @@
     </h3>
   </div>
 
-  <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="Post image" class="post-image" />
+  <img *ngIf="post.imageUrl && getImageUrl(post.imageUrl)"
+     [src]="getImageUrl(post.imageUrl)"
+     alt="Post image"
+     class="post-image" />
 
   <div class="post-actions">
     <button (click)="likePost(post)" [disabled]="post.likedByCurrentUser">
@@ -23,7 +26,7 @@
   <h4>Comments:</h4>
   <ul class="comment-list">
     <li *ngFor="let comment of post.comments">
-      <strong class="comment-username">{{ getUsernameById(comment.userId) | async }}</strong> {{ comment.content }} 
+      <strong class="comment-username">{{ getUsernameById(comment.userId) | async }}</strong> {{ comment.content }}
     </li>
   </ul>
 
