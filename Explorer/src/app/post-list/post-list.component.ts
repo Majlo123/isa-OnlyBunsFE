@@ -19,6 +19,7 @@ export class PostListComponent implements OnInit {
   currentUserId: number = 1;
   usernamesCache: Map<number, BehaviorSubject<string | undefined>> = new Map();
   canComment: boolean = true;
+  imageBlobUrls: Map<string, string> = new Map();
 
   constructor(
     private postService: PostService,
@@ -37,15 +38,24 @@ export class PostListComponent implements OnInit {
     this.postService.getPostsByFollowing(this.currentUserId).subscribe(
       (data: Post[]) => {
         this.posts = data;
-        console.log("Num of posts: " + data)
-        this.posts.forEach(element => {
-          
+        this.posts.forEach(post => {
+          if (post.imageUrl) {
+            this.postService.getPostImage(post.imageUrl).subscribe(blob => {
+              const objectUrl = URL.createObjectURL(blob);
+              this.imageBlobUrls.set(post.imageUrl, objectUrl);
+            });
+          }
         });
       },
       (error) => {
         console.error('Error fetching posts', error);
       }
     );
+  }
+
+
+  getImageUrl(imageUrl: string): string | undefined {
+    return this.imageBlobUrls.get(imageUrl);
   }
 
   likePost(post: Post): void {

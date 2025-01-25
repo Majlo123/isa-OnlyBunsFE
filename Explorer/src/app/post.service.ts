@@ -20,6 +20,10 @@ export class PostService {
   getPostsDTO(): Observable<PostDTO[]> {
     return this.http.get<PostDTO[]>(this.apiUrl)
   }
+  getPostImage(imageUrl: string): Observable<Blob> {
+    return this.http.get(`http://localhost:8080/${imageUrl}`, { responseType: 'blob' });
+  }
+
 
   likePost(id: number, userId: number): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/${id}/${userId}/like`, {});
