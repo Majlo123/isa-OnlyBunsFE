@@ -9,7 +9,7 @@
         <button *ngIf="isAdmin() &&user" color="accent" mat-raised-button [routerLink]="['/all-posts']" routerLinkActive="active">All Posts</button>
         <button *ngIf="isUser() &&user" color="accent" mat-raised-button [routerLink]="['/my-posts']" routerLinkActive="active">My posts</button>
         <button *ngIf="isUser() &&user" color="accent" mat-raised-button [routerLink]="['/register']" routerLinkActive="active">Register</button>
-        <button *ngIf="isUser() &&user" color="accent" mat-raised-button [routerLink]="['/trends']" routerLinkActive="active">Trends</button>
+        <button *ngIf="isUser() ||isAdmin()&&user" color="accent" mat-raised-button [routerLink]="['/trends']" routerLinkActive="active">Trends</button>
         <button *ngIf="isUser() &&user" color="accent" mat-raised-button [routerLink]="['/chats']" routerLinkActive="active">Chats</button>
         <button *ngIf="isUser() &&user" color="accent" mat-raised-button [routerLink]="['/nearby-posts']" routerLinkActive="active">Map Posts</button>
         <button *ngIf="isUser() &&user" color="accent" mat-raised-button [routerLink]="['/health-care']" routerLinkActive="active">Health Care</button>
